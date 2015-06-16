@@ -1,0 +1,58 @@
+<ion-view view-title="Record Data">
+  <ion-content>
+    <div class="row">
+      <div class="col col-33">  
+        <img src= "/nrl.png">
+      </div>
+      <div class="col col-33 col-offset-33">       
+        <img src=" /oskit.jpg">
+      </div>
+    </div>
+    
+    <form ng-submit="doRecord()">
+      <div class ="card">
+        <div class="item item-divider">
+          Water Temperature (°C) <br> <br>
+            <label class="item item-input">
+              <input type="tel"  placeholder="Temperature: 0-40°C"ng-model="temp.data">
+            </label>
+            <label class="item item-input">
+              <input type="tel"  placeholder="Depth: 0-10 m"ng-model="temp.depth">
+            </label>        
+        </div>
+      </div>
+      <div class ="card">
+        <div class="item item-divider">
+          Water Salinity (psu) <br> <br>
+            <label class="item item-input">
+              <input type="tel"  placeholder="Salinity: 0-40 psu"ng-model="salin.data">
+            </label>
+            <label class="item item-input">
+              <input type="tel"  placeholder="Depth: 0-10 m"ng-model="salin.depth">
+            </label>        
+        </div>
+      </div>
+      <div class ="card">
+        <div class="item item-divider">
+          Sechi Disk Depth (m) <br> <br>
+            <label class="item item-input">
+              <input type="tel"  placeholder="Depth: 0-10 m"ng-model="salin.depth">
+            </label>        
+        </div>
+      </div>
+      <div class ="card">
+        <div class="item range">
+          Weather:
+          <i class="icon ion-ios-sunny"></i>
+          <input type="range" name="weather" min="0" max="100" value="50" step="10">
+          <i class="icon ion-ios-rainy"></i>
+        </div>  
+      </div>
+    <div class="container">
+      <button class="button button-block button-positive" type="submit">
+        Upload
+      </button>
+    </div>
+  </form>
+  </ion-content>
+</ion-view>

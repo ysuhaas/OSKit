@@ -20,7 +20,7 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('ChatsCtrl', function($scope) {
+.controller('ChatsCtrl', function($scope, $cordovaFile) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -28,6 +28,22 @@ angular.module('starter.controllers', [])
   //
   //$scope.$on('$ionicView.enter', function(e) {
   //});
+
+// $ionicPlatform.ready(function() {
+//  $scope.doSave = function(a, b, c, d, e) {
+//    $cordovaFile.writeFile(cordova.file.documentsDirectory, )
+//}
+//});
+
+$scope.userSID = {};
+$scope.getSID = function () {
+var SID = $scope.userSID.data;
+  console.log('Your session ID is ' + SID);
+  window.alert (SID);
+};
+
+
+
 $scope.temp = {};
 $scope.salin = {};
 $scope.doRecord = function() {

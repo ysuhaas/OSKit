@@ -1,5 +1,8 @@
 <ion-view view-title="Record Data">
   <ion-content>
+
+
+ <!--Logos-->
     <div class="row">
       <div class="col col-33">  
         <img src= "/nrl.png">
@@ -8,8 +11,30 @@
         <img src=" /oskit.jpg">
       </div>
     </div>
-    
-    <form ng-submit="doRecord()">
+
+      
+<!--Session ID Input Field-->
+    <form ng-submit= "getSID()">
+      <div class ="card">
+        <div class="item item-divider">
+          Session ID 
+          <div class="list list-inset">
+            <label class="item item-input">
+              <input type="text"  placeholder="Enter a unique Session ID."ng-model="userSID.data">
+            </label>  
+          </div>    
+        <div class="container">
+          <button class="button button-royal button-block" type="submit">
+          Save
+          </button>
+        </div>
+        </div>
+      </div>
+    </form>
+
+
+<!--Temperature Input Field-->
+    <form ng-submit = "doSave()">
       <div class ="card">
         <div class="item item-divider">
           Water Temperature (°C) <br> <br>
@@ -18,9 +43,24 @@
             </label>
             <label class="item item-input">
               <input type="tel"  placeholder="Depth: 0-10 m"ng-model="temp.depth">
-            </label>        
+            </label>  
+            <div class ="row">
+              <div class ="col col-66">
+                <button class="button button-block button-royal" type="submit">
+                Save
+                </button>
+              </div>
+              <div class ="col col-offset-10"><br>
+                Counter
+              </div>     
+            </div>
         </div>
       </div>
+    </form>
+
+
+<!--Salinity Input Field-->
+    <form ng-submit ="doSave">
       <div class ="card">
         <div class="item item-divider">
           Water Salinity (psu) <br> <br>
@@ -29,30 +69,77 @@
             </label>
             <label class="item item-input">
               <input type="tel"  placeholder="Depth: 0-10 m"ng-model="salin.depth">
-            </label>        
+            </label>   
+            <div class ="row">
+              <div class ="col col-66">
+                <button class ="button button-block button-royal" type="submit">
+                  Save
+                </button>
+              </div>
+              <div class="col col-offset-10"><br>
+                Counter
+              </div>
+            </div>
         </div>
       </div>
+    </form>
+
+
+<!--Sechi Disk Depth Input Field-->
+    <form ng-submit ="doSave">
       <div class ="card">
         <div class="item item-divider">
           Sechi Disk Depth (m) <br> <br>
             <label class="item item-input">
               <input type="tel"  placeholder="Depth: 0-10 m"ng-model="salin.depth">
-            </label>        
+            </label>   
+            <div class ="row">
+              <div class ="col col-66">
+                <button class ="button button-block button-royal" type="submit">
+                  Save
+                </button>
+              </div>
+              <div class="col col-offset-10"><br>
+                Counter
+              </div>
+            </div>
+          </div>
         </div>
+      </form>
+
+
+<!--Weather Slider Input Field -->
+      <form ng-submit ="doSave">
+        <div class ="card">
+          <div class="item item-divider">
+            <div class="item range">
+              Weather:
+              <i class="icon ion-ios-sunny"></i>
+              <input type="range" name="weather" min="0" max="100" value="50" step="10">
+              <i class="icon ion-ios-rainy"></i>
+            </div>  
+            <div class ="row">
+              <div class ="col col-66">
+                <button class ="button button-block button-royal" type="submit">
+                  Save
+                </button>
+              </div>
+              <div class="col col-offset-10"><br>
+              Counter
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+
+
+<!--Upload Button-->
+      <div>
+        <button class="button button-block button-positive" type="submit">
+          Upload
+        </button>
       </div>
-      <div class ="card">
-        <div class="item range">
-          Weather:
-          <i class="icon ion-ios-sunny"></i>
-          <input type="range" name="weather" min="0" max="100" value="50" step="10">
-          <i class="icon ion-ios-rainy"></i>
-        </div>  
-      </div>
-    <div class="container">
-      <button class="button button-block button-positive" type="submit">
-        Upload
-      </button>
-    </div>
-  </form>
+
+
   </ion-content>
 </ion-view>

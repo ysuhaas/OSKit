@@ -1,4 +1,17 @@
 angular.module('starter.controllers', [])
+  // With the new view caching in Ionic, Controllers are only called
+  // when they are recreated or on app start, instead of every page change.
+  // To listen for when this page is active (for example, to refresh data),
+  // listen for the $ionicView.enter event:
+  //
+  //$scope.$on('$ionicView.enter', function(e) {
+  //});
+
+// $ionicPlatform.ready(function() {
+//  $scope.doSave = function(a, b, c, d, e) {
+//    $cordovaFile.writeFile(cordova.file.documentsDirectory, )
+//}
+//});
 
 .controller('DashCtrl', function($scope) {
  
@@ -20,54 +33,111 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('ChatsCtrl', function($scope, $cordovaFile) {
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
+.controller('ChatsCtrl', function($scope, $cordovaGeolocation, $cordovaFile, $cordovaFileTransfer, $ionicPlatform) {
 
-// $ionicPlatform.ready(function() {
-//  $scope.doSave = function(a, b, c, d, e) {
-//    $cordovaFile.writeFile(cordova.file.documentsDirectory, )
-//}
-//});
+//Defining Input Fields
+  $scope.temp = {};
+  $scope.salin = {};
+  $scope.sechi = {};
+  $scope.weather = {};
+  $scope.userSID = {};
 
-$scope.userSID = {};
-$scope.getSID = function () {
-var SID = $scope.userSID.data;
-  console.log('Your session ID is ' + SID);
-  window.alert (SID);
-};
+//Updates the Session ID and Retrieves Location Data
+  $scope.getSID = function () {
+    var SID = $scope.userSID.data;
+    console.log('Your session ID is ' + SID);
+    window.alert ('Your new session ID is ' + SID);
+    var pos0ptions = {timeout: 10000, enableHighAccuracy: true};
+    $cordovaGeolocation.getCurrentPosition(pos0ptions).then(function(position){
+      console.log('Latitude: '    + position.coords.latitude           + '\n' +
+          'Longitude: '         + position.coords.longitude         + '\n' +
+          'Altitude: '          + position.coords.altitude          + '\n' +
+          'Accuracy: '          + position.coords.accuracy          + '\n' +
+          'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+          'Heading: '           + position.coords.heading           + '\n' +
+          'Speed: '             + position.coords.speed             + '\n' +
+          'Timestamp: '         + position.timestamp                + '\n');
 
+      var lat = position.coords.latitude
+      var lon = position.coords.longitude
+      var alt = position.coords.altitude 
+      var acc = position.coords.accuracy
+      var head = position.coords.heading
+      var DTG = position.coords.timestamp
+      var speed = position.coords.speed 
 
+    }, function(err) {
+      alert('code: '    + error.code    + '\n' +
+            'message: ' + error.message + '\n');
+    })
+  };
 
-$scope.temp = {};
-$scope.salin = {};
-$scope.doRecord = function() {
-  if ($scope.temp.data<40 && $scope.temp.depth<10) {
-    if($scope.salin.data<40 && $scope.salin.depth<10) {
-      window.alert("Success");
-    }
-    else{
-      window.alert("Please check your salinity values.")
-    }
-  }
-  else if ($scope.salin.data<40 && $scope.salin.depth<10) {
-    if($scope.temp.data<40 && $scope.temp.depth<10) {
-      window.alert("Success");
-    }
-  else{
-    window.alert("Please check your temperature values.")
-    }
-  }    
-  else {
-    window.alert("Your values are incorrect. Please check that your values are within the tolerances.");
-  }
+//Parent export function
+  $scope.doSave = function () {
+    document.addEventListener("deviceready", onDeviceReady, false);
+    function onDeviceReady() {
+    console.log("console.log works well");
 }
+
+    $ionicPlatform.ready(function() {
+
+      console.log('Ionic is ready.')
+      var server = "http://www7330.nrlssc.navy.mil/derada/AEC";
+      var options = {
+        fileName: "test.txt",
+        chunkedMode: false,
+        httpMethod: "POST",
+      };
+      var trustAllHosts = true
+
+      $cordovaFile.writeFile(cordova.file.documentsDirectory, "test.txt", 'lat', true)
+      .then(function (success) {
+        console.log('File successfully saved.');
+        $cordovaFile.checkFile(cordova.file.documentsDirectory, "test.txt")
+        .then(function (success) {
+          console.log("File found.")
+          $cordovaFileTransfer.upload(server, cordova.file.documentsDirectory + "test.txt", options)
+            .then(function(result) {
+            console.log("Yes");
+            }, function(err) {
+            console.log("no");
+            }, function (progress) {
+            });
+        }, function (error) {
+          console.log("File not found");
+          });
+      }, function (error) {
+        console.log('Failure')
+      });
+    })
+  }
 })
+
+    
+
+
+//$scope.doRecord = function() {
+//  if ($scope.temp.data<40 && $scope.temp.depth<10) {
+//    if($scope.salin.data<40 && $scope.salin.depth<10) {
+//      window.alert("Success");
+//    }
+//    else{
+//      window.alert("Please check your salinity values.")
+//    }
+//  }
+//  else if ($scope.salin.data<40 && $scope.salin.depth<10) {
+//    if($scope.temp.data<40 && $scope.temp.depth<10) {
+//      window.alert("Success");
+//    }
+//  else{
+//    window.alert("Please check your temperature values.")
+//    }
+//  }    
+//  else {
+//    window.alert("Your values are incorrect. Please check that your values are within the tolerances.");
+//  }
+//}
+//})
 
 
 // .controller('AccountCtrl', function($scope, $cordovaFile, $ionicPlatform) {
@@ -84,11 +154,10 @@ $scope.doRecord = function() {
 
 
 .controller('AccountCtrl', function($scope, $cordovaGeolocation) {
-
-var pos0ptions = {timeout: 10000, enableHighAccuracy: true};
-$scope.doLocate = function () {
-  console.log("click")
-  $cordovaGeolocation.getCurrentPosition(pos0ptions).then(function(position){
+  var pos0ptions = {timeout: 10000, enableHighAccuracy: true};
+  $scope.doLocate = function () {
+    console.log("click")
+    $cordovaGeolocation.getCurrentPosition(pos0ptions).then(function(position){
     console.log('Latitude: '    + position.coords.latitude           + '\n' +
           'Longitude: '         + position.coords.longitude         + '\n' +
           'Altitude: '          + position.coords.altitude          + '\n' +
@@ -97,16 +166,9 @@ $scope.doLocate = function () {
           'Heading: '           + position.coords.heading           + '\n' +
           'Speed: '             + position.coords.speed             + '\n' +
           'Timestamp: '         + position.timestamp                + '\n');
-
-}, function(err) {
+  }, function(err) {
     alert('code: '    + error.code    + '\n' +
           'message: ' + error.message + '\n');
 });
-}
-
-
-
-
-
-  
+};  
 })

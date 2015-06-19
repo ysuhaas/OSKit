@@ -4,3 +4,31 @@
 	text-align: center;
 	color: green;	
 }
+
+.oskit{
+	text-align: right;
+}
+
+.new{
+	text-align: center;
+	font-size: 100%;
+	vertical-align: middle;
+	padding-top: 100px;
+
+
+}
+
+.connect-button{
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.purge-button {
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.submit {
+	padding-left: 25px;
+	padding-right: 25px;
+}

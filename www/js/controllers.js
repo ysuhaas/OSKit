@@ -7,11 +7,6 @@ angular.module('starter.controllers', [])
   //$scope.$on('$ionicView.enter', function(e) {
   //});
 
-// $ionicPlatform.ready(function() {
-//  $scope.doSave = function(a, b, c, d, e) {
-//    $cordovaFile.writeFile(cordova.file.documentsDirectory, )
-//}
-//});
 
 .controller('DashCtrl', function($scope) {
  
@@ -41,6 +36,14 @@ angular.module('starter.controllers', [])
   $scope.sechi = {};
   $scope.weather = {};
   $scope.userSID = {};
+  $scope.a = {
+    temp:1, 
+    salin:2, 
+    sechi:3, 
+    weather:4
+  };
+  $scope.loc = {};
+  
 
 //Updates the Session ID and Retrieves Location Data
   $scope.getSID = function () {
@@ -58,13 +61,13 @@ angular.module('starter.controllers', [])
           'Speed: '             + position.coords.speed             + '\n' +
           'Timestamp: '         + position.timestamp                + '\n');
 
-      var lat = position.coords.latitude
-      var lon = position.coords.longitude
-      var alt = position.coords.altitude 
-      var acc = position.coords.accuracy
-      var head = position.coords.heading
-      var DTG = position.coords.timestamp
-      var speed = position.coords.speed 
+      $scope.loc.lat = position.coords.latitude
+      $scope.loc.lon = position.coords.longitude
+      $scope.loc.alt = position.coords.altitude 
+      $scope.loc.acc = position.coords.accuracy
+      $scope.loc.head = position.coords.heading
+      $scope.loc.DTG = position.coords.timestamp
+      $scope.loc.speed = position.coords.speed 
 
     }, function(err) {
       alert('code: '    + error.code    + '\n' +
@@ -72,103 +75,94 @@ angular.module('starter.controllers', [])
     })
   };
 
-//Parent export function
-  $scope.doSave = function () {
-    document.addEventListener("deviceready", onDeviceReady, false);
-    function onDeviceReady() {
-    console.log("console.log works well");
-}
 
-    $ionicPlatform.ready(function() {
+//Parent export function: Should save file, tick up counter, and clear field
+  $scope.doSave = function (a) {
+   $ionicPlatform.ready(function(a) {
+      var SID = $scope.userSID.data;
+    
+      if (a == 1) {
+        var data1 = "temp.data + ', ' + temp.depth";
+        var variable = "temperature";
+        document.getElementById("counter-1").innerHTML = 1
+      }
+       if (a == 2) {
+        var data1 = "salin.data + ', ' + salin.depth";
+        var variable = "salinity";
+        document.getElementById("counter-2").innerHTML = 1
+      }
+       if (a = "3") {
+        var data1 = "sechi.depth";
+        var variable = "sechi";
+        document.getElementById("counter-3").innerHTML = 1
+      }
+       if (a = "4") {
+        var data1 = "weather.data";
+        var variable = "weather";
+        document.getElementById("counter-4").innerHTML = 1
+      }
 
-      console.log('Ionic is ready.')
-      var server = "http://www7330.nrlssc.navy.mil/derada/AEC";
-      var options = {
-        fileName: "test.txt",
-        chunkedMode: false,
-        httpMethod: "POST",
-      };
-      var trustAllHosts = true
+      var DTG = Date.now()
+      //var fileName = SID + "_" + variable + "_" + DTG + ".oskit";
+      var fileName = "test.txt"
+      console.log("FILENAME: " + fileName);
+      console.log(data1);
 
-      $cordovaFile.writeFile(cordova.file.documentsDirectory, "test.txt", 'lat', true)
+
+
+      $cordovaFile.writeFile(cordova.file.documentsDirectory, fileName, data1, true)
       .then(function (success) {
         console.log('File successfully saved.');
-        $cordovaFile.checkFile(cordova.file.documentsDirectory, "test.txt")
+        console.log(success);
+        $cordovaFile.checkFile(cordova.file.documentsDirectory, fileName)
         .then(function (success) {
           console.log("File found.")
-          $cordovaFileTransfer.upload(server, cordova.file.documentsDirectory + "test.txt", options)
-            .then(function(result) {
-            console.log("Yes");
-            }, function(err) {
-            console.log("no");
-            }, function (progress) {
-            });
+
         }, function (error) {
           console.log("File not found");
           });
+
+        
       }, function (error) {
-        console.log('Failure')
+        console.log(error);
       });
+
     })
-  }
+  };
+
+
+
+// Upload function: Should upload all files in directory
+$scope.doUpload = function() {
+console.log("click");
+     var server = "http://www7330.nrlssc.navy.mil/derada/AEC/upload.php";
+      var options = {
+          fileName: "test.txt",
+          httpMethod: "POST",
+          chunkedMode: false,
+          mimeType: "text/plain"
+      };
+
+      var trustAllHosts = true
+      var filePath = cordova.file.documentsDirectory + "test.txt"
+
+$cordovaFileTransfer.upload(server, filePath, options)
+      .then(function(result) {
+            console.log(success);
+            }, function(err) {
+            console.log(err);
+            }, function (progress) {
+              console.log(progress);
+            });
+};
 })
 
-    
 
-
-//$scope.doRecord = function() {
-//  if ($scope.temp.data<40 && $scope.temp.depth<10) {
-//    if($scope.salin.data<40 && $scope.salin.depth<10) {
-//      window.alert("Success");
-//    }
-//    else{
-//      window.alert("Please check your salinity values.")
-//    }
-//  }
-//  else if ($scope.salin.data<40 && $scope.salin.depth<10) {
-//    if($scope.temp.data<40 && $scope.temp.depth<10) {
-//      window.alert("Success");
-//    }
-//  else{
-//    window.alert("Please check your temperature values.")
-//    }
-//  }    
-//  else {
-//    window.alert("Your values are incorrect. Please check that your values are within the tolerances.");
-//  }
-//}
-//})
-
-
-// .controller('AccountCtrl', function($scope, $cordovaFile, $ionicPlatform) {
-// $ionicPlatform.ready(function() {
-//    console.log("Ionic is ready.");
-//    $cordovaFile.getFreeDiskSpace()
-//      .then(function (success) {
-         // success in kilobytes
-//      }, function (error) {
-          // error
-//      });
-//});
 
 
 
 .controller('AccountCtrl', function($scope, $cordovaGeolocation) {
-  var pos0ptions = {timeout: 10000, enableHighAccuracy: true};
-  $scope.doLocate = function () {
-    console.log("click")
-    $cordovaGeolocation.getCurrentPosition(pos0ptions).then(function(position){
-    console.log('Latitude: '    + position.coords.latitude           + '\n' +
-          'Longitude: '         + position.coords.longitude         + '\n' +
-          'Altitude: '          + position.coords.altitude          + '\n' +
-          'Accuracy: '          + position.coords.accuracy          + '\n' +
-          'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
-          'Heading: '           + position.coords.heading           + '\n' +
-          'Speed: '             + position.coords.speed             + '\n' +
-          'Timestamp: '         + position.timestamp                + '\n');
-  }, function(err) {
-    alert('code: '    + error.code    + '\n' +
-          'message: ' + error.message + '\n');
-});
-};  
+$scope.doRemove = function() {
+  window.alert("Local cache cleared.");
+}  
 })

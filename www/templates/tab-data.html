@@ -4,10 +4,13 @@
 
  <!--Logos-->
     <div class="row">
-      <div class="col col-33">  
+      <div class="col col-33 nrl">  
         <img src= "/nrl.png">
       </div>
-      <div class="col col-33 col-offset-33">       
+      <div class="col col-33 new">  
+        OSKit Mobile Application
+      </div>
+      <div class="col col-33 oskit">       
         <img src=" /oskit.jpg">
       </div>
     </div>
@@ -34,7 +37,7 @@
 
 
 <!--Temperature Input Field-->
-    <form ng-submit = "doSave()">
+    <form ng-submit = "doSave(a.temp)">
       <div class ="card">
         <div class="item item-divider">
           Water Temperature (°C) <br> <br>
@@ -50,7 +53,7 @@
                 Save
                 </button>
               </div>
-              <div class ="col col-offset-10"><br>
+              <div class ="col col-offset-10" id="counter-1"><br>
                 Counter
               </div>     
             </div>
@@ -60,7 +63,7 @@
 
 
 <!--Salinity Input Field-->
-    <form ng-submit ="doSave">
+    <form ng-submit ="doSave(a.salin)">
       <div class ="card">
         <div class="item item-divider">
           Water Salinity (psu) <br> <br>
@@ -76,7 +79,7 @@
                   Save
                 </button>
               </div>
-              <div class="col col-offset-10"><br>
+              <div class="col col-offset-10" id="counter-2"><br>
                 Counter
               </div>
             </div>
@@ -86,7 +89,7 @@
 
 
 <!--Sechi Disk Depth Input Field-->
-    <form ng-submit ="doSave">
+    <form ng-submit ="doSave(a.sechi)">
       <div class ="card">
         <div class="item item-divider">
           Sechi Disk Depth (m) <br> <br>
@@ -99,7 +102,7 @@
                   Save
                 </button>
               </div>
-              <div class="col col-offset-10"><br>
+              <div class="col col-offset-10" id="counter-3"><br>
                 Counter
               </div>
             </div>
@@ -109,7 +112,7 @@
 
 
 <!--Weather Slider Input Field -->
-      <form ng-submit ="doSave">
+      <form ng-submit ="doSave(a.weather)">
         <div class ="card">
           <div class="item item-divider">
             <div class="item range">
@@ -124,7 +127,7 @@
                   Save
                 </button>
               </div>
-              <div class="col col-offset-10"><br>
+              <div class="col col-offset-10" id="counter-4"><br>
               Counter
               </div>
             </div>
@@ -134,8 +137,8 @@
 
 
 <!--Upload Button-->
-      <div>
-        <button class="button button-block button-positive" type="submit">
+      <div class="submit">
+        <button class="button button-block button-positive" type="submit" ng-click= "doUpload()">
           Upload
         </button>
       </div>

@@ -37,7 +37,7 @@
 
 
 <!--Temperature Input Field-->
-    <form ng-submit = "doSave(a.temp)">
+    <form ng-submit = "doSave(0)">
       <div class ="card">
         <div class="item item-divider">
           Water Temperature (°C) <br> <br>
@@ -63,7 +63,7 @@
 
 
 <!--Salinity Input Field-->
-    <form ng-submit ="doSave(a.salin)">
+    <form ng-submit ="doSave(1)">
       <div class ="card">
         <div class="item item-divider">
           Water Salinity (psu) <br> <br>
@@ -89,7 +89,7 @@
 
 
 <!--Sechi Disk Depth Input Field-->
-    <form ng-submit ="doSave(a.sechi)">
+    <form ng-submit ="doSave(2)">
       <div class ="card">
         <div class="item item-divider">
           Sechi Disk Depth (m) <br> <br>
@@ -112,7 +112,7 @@
 
 
 <!--Weather Slider Input Field -->
-      <form ng-submit ="doSave(a.weather)">
+      <form ng-submit ="doSave(3)">
         <div class ="card">
           <div class="item item-divider">
             <div class="item range">
@@ -137,11 +137,16 @@
 
 
 <!--Upload Button-->
-      <div class="submit">
+<!--<form enctype="multipart/form-data" action="http://www7330.nrlssc.navy.mil/derada/AEC/upload.php" method="POST">
+  <input type ="text" name="filename">
+  <input type="submit" value="upload">
+  </form> -->
+
+     <div class="submit">
         <button class="button button-block button-positive" type="submit" ng-click= "doUpload()">
           Upload
         </button>
-      </div>
+      </div> 
 
 
   </ion-content>

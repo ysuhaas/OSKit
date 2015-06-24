@@ -7,6 +7,12 @@
 
 .oskit{
 	text-align: right;
+    height: 50px;
+}
+
+.nrl {
+    height: 50px;
+    width:10px;
 }
 
 .new{

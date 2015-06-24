@@ -14,6 +14,8 @@
         <img src=" /oskit.jpg">
       </div>
     </div>
+    <br>
+    <br>
 
       
 <!--Session ID Input Field-->
@@ -37,7 +39,7 @@
 
 
 <!--Temperature Input Field-->
-    <form ng-submit = "doSave(0)">
+    <form ng-submit = "doSave1()" id="temp">
       <div class ="card">
         <div class="item item-divider">
           Water Temperature (°C) <br> <br>
@@ -54,7 +56,7 @@
                 </button>
               </div>
               <div class ="col col-offset-10" id="counter-1"><br>
-                Counter
+                0
               </div>     
             </div>
         </div>
@@ -63,7 +65,7 @@
 
 
 <!--Salinity Input Field-->
-    <form ng-submit ="doSave(1)">
+    <form ng-submit ="doSave2()" id="salin">
       <div class ="card">
         <div class="item item-divider">
           Water Salinity (psu) <br> <br>
@@ -80,7 +82,7 @@
                 </button>
               </div>
               <div class="col col-offset-10" id="counter-2"><br>
-                Counter
+                0
               </div>
             </div>
         </div>
@@ -89,7 +91,7 @@
 
 
 <!--Sechi Disk Depth Input Field-->
-    <form ng-submit ="doSave(2)">
+    <form ng-submit ="doSave3()" id="sechi">
       <div class ="card">
         <div class="item item-divider">
           Sechi Disk Depth (m) <br> <br>
@@ -103,7 +105,7 @@
                 </button>
               </div>
               <div class="col col-offset-10" id="counter-3"><br>
-                Counter
+                0
               </div>
             </div>
           </div>
@@ -112,7 +114,7 @@
 
 
 <!--Weather Slider Input Field -->
-      <form ng-submit ="doSave(3)">
+      <form ng-submit ="doSave4()" id="weather">
         <div class ="card">
           <div class="item item-divider">
             <div class="item range">
@@ -128,7 +130,7 @@
                 </button>
               </div>
               <div class="col col-offset-10" id="counter-4"><br>
-              Counter
+              0
               </div>
             </div>
           </div>
@@ -143,7 +145,7 @@
   </form> -->
 
      <div class="submit">
-        <button class="button button-block button-positive" type="submit" ng-click= "doUpload()">
+        <button class="button button-block button-positive" type="submit" ng-click= "dofUpload()">
           Upload
         </button>
       </div> 

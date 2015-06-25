@@ -2,7 +2,13 @@
 .connect-icon {
 	font-size: 100px;
 	text-align: center;
-	color: green;	
+	color: gray;
+	ion-checkmark;	
+}
+
+.status-button{
+	padding-left: 20px;
+	padding-right: 20px;
 }
 
 .oskit{
@@ -26,10 +32,6 @@
 	padding-right: 20px;
 }
 
-.purge-button {
-	padding-left: 20px;
-	padding-right: 20px;
-}
 
 .submit {
 	padding-left: 25px;

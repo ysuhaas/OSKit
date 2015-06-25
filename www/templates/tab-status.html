@@ -1,17 +1,12 @@
 <ion-view view-title="Connection Status">
   <ion-content>
-
-    <div class ="list card text-center">
-
-    <i class="icon ion-checkmark connect-icon"></i>
-
-    <br>
+    <div class ="list card text-center" id ="connect-card">
+      <i id="connect-icon" class="icon ion-help-circled connect-icon"></i><br>
+      <div class="connect-status-text" id="connect-text">Connection Status: Unknown
+      </div>
     </div>
-    <div class= "connect-button">
-  <button class="button button-balanced button-block" ng-click="checkConnection()">
-      Check Connection Status <br> (Not completed yet.)
-  </button>
-</div>
-
+    <div class= "status-button">
+      <button class="button button-royal button-block" ng-click="checkConnection()">Check Connection Status</button>
+    </div>
   <ion-content>
-</ion-view>
+</ion-view> 

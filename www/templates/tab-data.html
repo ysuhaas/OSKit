@@ -18,7 +18,7 @@
     <br>
 
       
-<!--Session ID Input Field-->
+<!--Session ID Input Field
     <form ng-submit= "getSID()">
       <div class ="card">
         <div class="item item-divider">
@@ -35,7 +35,7 @@
         </div>
         </div>
       </div>
-    </form>
+    </form> -->
 
 
 <!--Temperature Input Field-->
@@ -44,10 +44,10 @@
         <div class="item item-divider">
           Water Temperature (°C) <br> <br>
             <label class="item item-input">
-              <input type="tel"  placeholder="Temperature: 0-40°C"ng-model="temp.data">
+              <input type="number"  placeholder="Temperature: 0-40°C" ng-model="temp.data">
             </label>
             <label class="item item-input">
-              <input type="tel"  placeholder="Depth: 0-10 m"ng-model="temp.depth">
+              <input type="number"  placeholder="Depth: 0-100 m" ng-model="temp.depth">
             </label>  
             <div class ="row">
               <div class ="col col-66">
@@ -55,9 +55,7 @@
                 Save
                 </button>
               </div>
-              <div class ="col col-offset-10" id="counter-1"><br>
-                0
-              </div>     
+              <div class ="col col-offset-10" id="counter-1">0</div>     
             </div>
         </div>
       </div>
@@ -70,10 +68,10 @@
         <div class="item item-divider">
           Water Salinity (psu) <br> <br>
             <label class="item item-input">
-              <input type="tel"  placeholder="Salinity: 0-40 psu"ng-model="salin.data">
+              <input type="number"  placeholder="Salinity: 0-40 psu" ng-model="salin.data">
             </label>
             <label class="item item-input">
-              <input type="tel"  placeholder="Depth: 0-10 m"ng-model="salin.depth">
+              <input type="number"  placeholder="Depth: 0-100 m" ng-model="salin.depth">
             </label>   
             <div class ="row">
               <div class ="col col-66">
@@ -81,9 +79,7 @@
                   Save
                 </button>
               </div>
-              <div class="col col-offset-10" id="counter-2"><br>
-                0
-              </div>
+              <div class="col col-offset-10" id="counter-2">0</div>
             </div>
         </div>
       </div>
@@ -96,7 +92,7 @@
         <div class="item item-divider">
           Sechi Disk Depth (m) <br> <br>
             <label class="item item-input">
-              <input type="tel"  placeholder="Depth: 0-10 m"ng-model="sechi.depth">
+              <input type="number"  placeholder="Depth: 0-100 m" ng-model="sechi.depth">
             </label>   
             <div class ="row">
               <div class ="col col-66">

@@ -58,6 +58,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       }
    })
 
+    .state('tab.camera', {
+    url: '/camera',
+    views: {
+      'tab-camera': {
+        templateUrl: 'templates/tab-camera.html',
+        controller: 'CameraCtrl'
+      }
+    }
+  })
+
 
   .state('tab.settings', {
     url: '/settings',

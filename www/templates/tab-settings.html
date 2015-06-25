@@ -1,8 +1,38 @@
 <ion-view view-title="Settings">
   <ion-content>
-<div class="purge-button">
-  	<button class = "button button-assertive button-block" ng-click= "doRemove()">Purge Local Cache
-    </button>
-</div>
+	<div class ="card">
+		<form ng-submit= "getSID()">
+        	<div class="item item-divider">Session ID 
+          		<div class="list list-inset">
+            		<label class="item item-input">
+              			<input type="text"  placeholder="Enter a unique Session ID."ng-model="userSID.data">	
+            		</label>  
+          		</div>
+        		<div class="container">
+          			<button class="button button-balanced button-block" type="submit">
+          			Set Session ID
+          			</button>
+        		</div>
+        		</form>
+        		<div class="purge-button">
+  					<button class = "button button-assertive button-block" ng-click= "doRemove()">
+  					Purge Local Cache
+   					</button>
+				</div>
+        	</div>
+    </div>
+	<div class ="card">
+    	<div class = "item item-divider">Upload Address
+          		<div class="list list-inset">
+            		<label class="item item-input">
+              			<input type = "text" placeholder="Enter the upload server address." ng-model="">	
+            		</label>  
+          		</div>
+        		<div class = "container">
+    				<button class = "button button-royal button-block" ng-click="">Save
+    				</button>
+    			</div>		
+        </div>
+    </div>
   </ion-content>
 </ion-view>

@@ -19,11 +19,12 @@ angular.module('starter.controllers', [])
   return service;
 })
 
+
+
 .controller('DashCtrl', function($scope) {
  
  //Connection Status Function
   $scope.checkConnection = function () {
-      console.log('Click');
       var networkState = navigator.connection.type;
       var states = {};
             states[Connection.UNKNOWN]  = 'Unknown connection';
@@ -36,23 +37,18 @@ angular.module('starter.controllers', [])
             states[Connection.NONE]     = 'No network connection';
       console.log('Connection type: ' + states[networkState]);
       if (states[networkState] = 'Wifi connection') {
-        var connect = true;
         document.getElementById("connect-text").innerHTML = "Connection Status: WiFi Connection";
       }
       else if (states[networkState] = 'No network connection') {
-        document.getElementById("connect-icon").class = "icon ion-close connect-icon";
         document.getElementById("connect-text").innerHTML = "Connection Status: No connection available";
       } 
       else {
-        document.getElementById("connect-icon").class = "icon ion-checkmark connect-icon";
         document.getElementById("connect-text").innerHTML = "Connection Status: Cellular Data Connection";
       }
 
   };
-
-
-
 })
+
 
 
 .controller('ChatsCtrl', function($scope, $cordovaGeolocation, $cordovaFile, $cordovaFileTransfer, $ionicPlatform, $timeout, dataShare) {
@@ -70,7 +66,12 @@ angular.module('starter.controllers', [])
   $scope.counter2 = 0;
   $scope.counter3 = 0;
   $scope.counter4 = 0;
+  $scope.tempfiles = [];
+  $scope.salinfiles = [];
+  $scope.sechifiles = [];
+  $scope.weatherfiles = [];
 
+//Retrieves SID from Settings Controller
   $scope.SID = {};
   $scope.$on('data_shared', function(){
     var userSID = dataShare.getData();
@@ -78,6 +79,7 @@ angular.module('starter.controllers', [])
     console.log($scope.SID.data);
   });
 
+//Gets Location Data and Updates DOM
   var pos0ptions = {timeout: 10000, enableHighAccuracy: true};
   $cordovaGeolocation.getCurrentPosition(pos0ptions)
       .then(function(position){
@@ -104,9 +106,8 @@ angular.module('starter.controllers', [])
             'message: ' + error.message + '\n');
     })
 
-//Parent export function: Should save file, tick up counter, and clear field
+//Parent export function: Should save file, tick up counter, and clear field (Individual saves for now)
   $scope.doSave1 = function() {
-    console.log ("controller 1: " + $scope.SID.data)
     if (($scope.temp.data > 0 && $scope.temp.data < 40) && ($scope.temp.depth > 0 && $scope.temp.depth < 100)) {
     $ionicPlatform.ready(function() {
       var SID = $scope.SID.data;
@@ -119,18 +120,9 @@ angular.module('starter.controllers', [])
       $cordovaFile.writeFile(cordova.file.documentsDirectory, $scope.fileName, data, true)
       .then(function (success) {
         console.log('File successfully saved.');
-        var url = "http://www7330.nrlssc.navy.mil/derada/AEC/upload.php";
-        var targetPath = cordova.file.documentsDirectory + $scope.fileName;
-        var filesname = targetPath.split("/").pop();
-        var options = {fileKey: "filename", fileName: filesname, chunkedMode: false, mimeType: "text/plain"};
-        $cordovaFileTransfer.upload(url, targetPath, options)
-        .then(function(result) {
-          console.log(">>>");
-          var form = document.getElementById("temp");
-          form.reset();
-        }, function(err) {
-        }, function (progress) {
-        }); 
+        $scope.tempfiles.push($scope.fileName);
+        var form = document.getElementById("temp");
+        form.reset();
       }, function (error) {
         console.log("File not saved");
         console.log("ERROR: " + error);
@@ -140,6 +132,7 @@ angular.module('starter.controllers', [])
       window.alert("Your values are not within the tolerances. Please check them and resubmit.")
     }
   };
+
 
   $scope.doSave2 = function() {
     if (($scope.salin.data > 0 && $scope.salin.data < 40) && ($scope.salin.depth > 0 && $scope.salin.depth < 100)) {
@@ -154,18 +147,9 @@ angular.module('starter.controllers', [])
       $cordovaFile.writeFile(cordova.file.documentsDirectory, $scope.fileName, data, true)
       .then(function (success) {
         console.log('File successfully saved.');
-        var url = "http://www7330.nrlssc.navy.mil/derada/AEC/upload.php";
-        var targetPath = cordova.file.documentsDirectory + $scope.fileName;
-        var filesname = targetPath.split("/").pop();
-        var options = {fileKey: "filename", fileName: filesname, chunkedMode: false, mimeType: "text/plain"};
-        $cordovaFileTransfer.upload(url, targetPath, options)
-        .then(function(result) {
-          console.log(">>>");
-          var form = document.getElementById("salin");
-          form.reset();
-        }, function(err) {
-        }, function (progress) {
-        }); 
+        $scope.salinfiles.push($scope.fileName);
+        var form = document.getElementById("salin");
+        form.reset();
       }, function (error) {
         console.log("File not saved");
         console.log("ERROR: " + error);
@@ -176,6 +160,7 @@ angular.module('starter.controllers', [])
     }
   };
 
+
   $scope.doSave3 = function() {
     if ($scope.sechi.depth > 0 && $scope.sechi.depth < 100) {
     $ionicPlatform.ready(function() {
@@ -183,24 +168,15 @@ angular.module('starter.controllers', [])
       var DTG = Date.now()
       var data = $scope.sechi.depth + ', ' + $scope.loc.lat + ', ' + $scope.loc.lon + ', ' + $scope.loc.acc + ', ' + $scope.loc.alti + ', ' + $scope.loc.heading + ', ' + $scope.loc.speed;
       var variable = "sechi";
-      $scope.counter1 += 3;
+      $scope.counter3 += 1;
       document.getElementById("counter-3").innerHTML = $scope.counter1;
       $scope.fileName = SID + "_" + variable + "_" + DTG + ".oskit";
       $cordovaFile.writeFile(cordova.file.documentsDirectory, $scope.fileName, data, true)
       .then(function (success) {
         console.log('File successfully saved.');
-        var url = "http://www7330.nrlssc.navy.mil/derada/AEC/upload.php";
-        var targetPath = cordova.file.documentsDirectory + $scope.fileName;
-        var filesname = targetPath.split("/").pop();
-        var options = {fileKey: "filename", fileName: filesname, chunkedMode: false, mimeType: "text/plain"};
-        $cordovaFileTransfer.upload(url, targetPath, options)
-        .then(function(result) {
-          console.log(">>>");
-          var form = document.getElementById("sechi");
-          form.reset();
-        }, function(err) {
-        }, function (progress) {
-        }); 
+        $scope.sechifiles.push($scope.fileName);
+        var form = document.getElementById("sechi");
+        form.reset();
       }, function (error) {
         console.log("File not saved");
         console.log("ERROR: " + error);
@@ -210,6 +186,7 @@ angular.module('starter.controllers', [])
       window.alert("Your values are not within the tolerances. Please check them and resubmit.")
     }
   };
+
 
   $scope.doSave4 = function() {
     $ionicPlatform.ready(function() {
@@ -223,18 +200,9 @@ angular.module('starter.controllers', [])
       $cordovaFile.writeFile(cordova.file.documentsDirectory, $scope.fileName, data, true)
       .then(function (success) {
         console.log('File successfully saved.');
-        var url = "http://www7330.nrlssc.navy.mil/derada/AEC/upload.php";
-        var targetPath = cordova.file.documentsDirectory + $scope.fileName;
-        var filesname = targetPath.split("/").pop();
-        var options = {fileKey: "filename", fileName: filesname, chunkedMode: false, mimeType: "text/plain"};
-        $cordovaFileTransfer.upload(url, targetPath, options)
-        .then(function(result) {
-          console.log(">>>");
-          //var form = document.getElementById("weather");
-          //form.reset();
-        }, function(err) {
-        }, function (progress) {
-        }); 
+        $scope.weatherfiles.push($scope.fileName);
+        var form = document.getElementById("weather");
+        form.reset(); 
       }, function (error) {
         console.log("File not saved");
         console.log("ERROR: " + error);
@@ -242,51 +210,101 @@ angular.module('starter.controllers', [])
     })
   };
 
+
 // Upload function: Should upload all files in directory
   $scope.doUpload = function() {
     var url = "http://www7330.nrlssc.navy.mil/derada/AEC/upload.php";
-    var targetPath = cordova.file.documentsDirectory + $scope.fileName;
-    var filesname = targetPath.split("/").pop();
-    var options = {
-      fileKey: "filename",
-      fileName: filesname,
-      chunkedMode: false,
-      mimeType: "text/plain"
-    };
-
-    $cordovaFileTransfer.upload(url, targetPath, options)
-    .then(function(result) {
+    for (var i = 0; i < $scope.tempfiles.length; i++){
+      var targetPath = cordova.file.documentsDirectory + $scope.tempfiles[i];
+      var filesname = targetPath.split("/").pop();
+      var options = {fileKey: "filename", fileName: filesname, chunkedMode: false, mimeType: "text/plain"};
+      $cordovaFileTransfer.upload(url, targetPath, options)
+      .then(function(result) {
       console.log("SUCCESS: " + JSON.stringify(result.response));
-      window.alert("Files successfully uploaded!");
-      console.log(JSON.stringify(result.response));
-    }, function(err) {
+      }, function(err) {
       console.log("ERROR: " + JSON.stringify(err));
-      window.alert(JSON.stringify(err));
       //Can add error codes/handlers here
-    }, function (progress) {
+      }, function (progress) {
       $timeout(function () {
       $scope.downloadProgress = (progress.loaded / progress.total) * 100;
       })
-    })  
-  }
+      })  
+    }
 
-$scope.dofUpload = function () {
-  setTimeout(function(){ alert("Files finished uploading."); }, 3000);
-};
+    for (var i = 0; i < $scope.salinfiles.length; i++){
+      var targetPath = cordova.file.documentsDirectory + $scope.salinfiles[i];
+      var filesname = targetPath.split("/").pop();
+      var options = {fileKey: "filename", fileName: filesname, chunkedMode: false, mimeType: "text/plain"};
+      $cordovaFileTransfer.upload(url, targetPath, options)
+      .then(function(result) {
+      console.log("SUCCESS: " + JSON.stringify(result.response));
+      }, function(err) {
+      console.log("ERROR: " + JSON.stringify(err));
+      //Can add error codes/handlers here
+      }, function (progress) {
+      $timeout(function () {
+      $scope.downloadProgress = (progress.loaded / progress.total) * 100;
+      })
+      })  
+    }
 
+    for (var i = 0; i < $scope.sechifiles.length; i++){
+      var targetPath = cordova.file.documentsDirectory + $scope.sechifiles[i];
+      var filesname = targetPath.split("/").pop();
+      var options = {fileKey: "filename", fileName: filesname, chunkedMode: false, mimeType: "text/plain"};
+      $cordovaFileTransfer.upload(url, targetPath, options)
+      .then(function(result) {
+      console.log("SUCCESS: " + JSON.stringify(result.response));
+      }, function(err) {
+      console.log("ERROR: " + JSON.stringify(err));
+      //Can add error codes/handlers here
+      }, function (progress) {
+      $timeout(function () {
+      $scope.downloadProgress = (progress.loaded / progress.total) * 100;
+      })
+      })  
+    }
+
+    for (var i = 0; i < $scope.weatherfiles.length; i++){
+      var targetPath = cordova.file.documentsDirectory + $scope.weatherfiles[i];
+      var filesname = targetPath.split("/").pop();
+      var options = {fileKey: "filename", fileName: filesname, chunkedMode: false, mimeType: "text/plain"};
+      $cordovaFileTransfer.upload(url, targetPath, options)
+      .then(function(result) {
+      console.log("SUCCESS: " + JSON.stringify(result.response));
+      }, function(err) {
+      console.log("ERROR: " + JSON.stringify(err));
+      //Can add error codes/handlers here
+      }, function (progress) {
+      $timeout(function () {
+      $scope.downloadProgress = (progress.loaded / progress.total) * 100;
+      })
+      })  
+    }
+
+    
+  };
 })
 
 
 
 
+/*$scope.dofUpload = function () {
+  setTimeout(function(){ alert("Files finished uploading."); }, 3000);
+};
+
+}) */
+
+
+
 .controller('AccountCtrl', function($scope, $cordovaDialogs, $cordovaFile, dataShare) {
-$scope.newSID = {};
-$scope.userSID = {};
+  $scope.newSID = {};
+  $scope.userSID = {};
+  $scope.server = {};
 //Removes SID Directory
   $scope.doRemove = function() {
     $cordovaDialogs.confirm('Are you sure you want to delete all local files? This action is permanant.', 'Purge Local Cache', ['Delete','Cancel'])
-      .then(function(buttonIndex) {
-        // no button = 0, 'OK' = 1, 'Cancel' = 2
+      .then(function(buttonIndex) {         // no button = 0, 'OK' = 1, 'Cancel' = 2
         var btnIndex = buttonIndex;
         if (buttonIndex == 1) {
           $ionicPlatform.ready(function() {
@@ -311,25 +329,24 @@ $scope.userSID = {};
           return null;
         }
       });
-  } 
-
+  };
 //Updates the Session ID
   $scope.setSID = function () {
     $scope.newSID = $scope.userSID.data
     console.log('Session ID set to: ' + $scope.newSID);
     window.alert ('Your new session ID is ' + $scope.newSID);
-
     dataShare.sendData($scope.newSID);
-   /* $cordovaFile.createDir(cordova.file.documentsDirectory, SID, false)
+    $cordovaFile.createDir(cordova.file.documentsDirectory, $scope.newSID, false)
     .then(function (success) {
-      console.log("New directory " + SID + " created.");
+      console.log("New directory " + $scope.newSID + " created.");
     }, function (error) {
       window.alert("Error: This Session ID has already been used.");
       console.log(error);
-    }); */
+    }); 
   }; 
-
 })
+
+
 
 .controller('CameraCtrl', function($scope) {
   })

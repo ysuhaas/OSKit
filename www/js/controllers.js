@@ -6,6 +6,18 @@ angular.module('starter.controllers', [])
   //
   //$scope.$on('$ionicView.enter', function(e) {
   //});
+.factory('dataShare',function($rootScope){
+  var service = {};
+  service.data = false;
+  service.sendData = function(data){
+      this.data = data;
+      $rootScope.$broadcast('data_shared');
+  };
+  service.getData = function(){
+    return this.data;
+  };
+  return service;
+})
 
 .controller('DashCtrl', function($scope) {
  
@@ -43,7 +55,7 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('ChatsCtrl', function($scope, $cordovaGeolocation, $cordovaFile, $cordovaFileTransfer, $ionicPlatform, $timeout) {
+.controller('ChatsCtrl', function($scope, $cordovaGeolocation, $cordovaFile, $cordovaFileTransfer, $ionicPlatform, $timeout, dataShare) {
 
 //Defining Input Fields
   $scope.temp = {};
@@ -58,6 +70,13 @@ angular.module('starter.controllers', [])
   $scope.counter2 = 0;
   $scope.counter3 = 0;
   $scope.counter4 = 0;
+
+  $scope.SID = {};
+  $scope.$on('data_shared', function(){
+    var userSID = dataShare.getData();
+    $scope.SID.data = userSID;
+    console.log($scope.SID.data);
+  });
 
   var pos0ptions = {timeout: 10000, enableHighAccuracy: true};
   $cordovaGeolocation.getCurrentPosition(pos0ptions)
@@ -77,7 +96,9 @@ angular.module('starter.controllers', [])
       $scope.loc.head = position.coords.heading
       $scope.loc.DTG = position.coords.timestamp
       $scope.loc.speed = position.coords.speed 
-
+      var lochtml = $scope.loc.lat + ', ' + $scope.loc.lon;
+      document.getElementById("location").innerHTML = lochtml
+      console.log(lochtml);
     }, function(err) {
       alert('code: '    + error.code    + '\n' +
             'message: ' + error.message + '\n');
@@ -85,9 +106,10 @@ angular.module('starter.controllers', [])
 
 //Parent export function: Should save file, tick up counter, and clear field
   $scope.doSave1 = function() {
+    console.log ("controller 1: " + $scope.SID.data)
     if (($scope.temp.data > 0 && $scope.temp.data < 40) && ($scope.temp.depth > 0 && $scope.temp.depth < 100)) {
     $ionicPlatform.ready(function() {
-      var SID = $scope.userSID.data;
+      var SID = $scope.SID.data;
       var DTG = Date.now()
       var data = $scope.temp.data + ', ' + $scope.temp.depth + ', ' + $scope.loc.lat + ', ' + $scope.loc.lon + ', ' + $scope.loc.acc + ', ' + $scope.loc.alti + ', ' + $scope.loc.heading + ', ' + $scope.loc.speed;
       var variable = "temperature";
@@ -122,7 +144,7 @@ angular.module('starter.controllers', [])
   $scope.doSave2 = function() {
     if (($scope.salin.data > 0 && $scope.salin.data < 40) && ($scope.salin.depth > 0 && $scope.salin.depth < 100)) {
     $ionicPlatform.ready(function() {
-      var SID = $scope.userSID.data;
+      var SID = $scope.SID.data;
       var DTG = Date.now()
       var data = $scope.salin.data + ', ' + $scope.salin.depth + ', ' + $scope.loc.lat + ', ' + $scope.loc.lon + ', ' + $scope.loc.acc + ', ' + $scope.loc.alti + ', ' + $scope.loc.heading + ', ' + $scope.loc.speed;
       var variable = "salinity";
@@ -157,7 +179,7 @@ angular.module('starter.controllers', [])
   $scope.doSave3 = function() {
     if ($scope.sechi.depth > 0 && $scope.sechi.depth < 100) {
     $ionicPlatform.ready(function() {
-      var SID = $scope.userSID.data;
+      var SID = $scope.SID.data;
       var DTG = Date.now()
       var data = $scope.sechi.depth + ', ' + $scope.loc.lat + ', ' + $scope.loc.lon + ', ' + $scope.loc.acc + ', ' + $scope.loc.alti + ', ' + $scope.loc.heading + ', ' + $scope.loc.speed;
       var variable = "sechi";
@@ -191,7 +213,7 @@ angular.module('starter.controllers', [])
 
   $scope.doSave4 = function() {
     $ionicPlatform.ready(function() {
-      var SID = $scope.userSID.data;
+      var SID = $scope.SID.data;
       var DTG = Date.now();
       var data = $scope.weather.data + ', ' + $scope.loc.lat + ', ' + $scope.loc.lon + ', ' + $scope.loc.acc + ', ' + $scope.loc.alti + ', ' + $scope.loc.heading + ', ' + $scope.loc.speed;
       var variable = "weather";
@@ -257,7 +279,9 @@ $scope.dofUpload = function () {
 
 
 
-.controller('AccountCtrl', function($scope, $cordovaDialogs, $cordovaFile) {
+.controller('AccountCtrl', function($scope, $cordovaDialogs, $cordovaFile, dataShare) {
+$scope.newSID = {};
+$scope.userSID = {};
 //Removes SID Directory
   $scope.doRemove = function() {
     $cordovaDialogs.confirm('Are you sure you want to delete all local files? This action is permanant.', 'Purge Local Cache', ['Delete','Cancel'])
@@ -290,18 +314,19 @@ $scope.dofUpload = function () {
   } 
 
 //Updates the Session ID
-  $scope.getSID = function () {
-    var SID = $scope.userSID.data;
-    console.log('Session ID set to: ' + SID);
-    window.alert ('Your new session ID is ' + SID);
-    var pos0ptions = {timeout: 10000, enableHighAccuracy: true};
-    $cordovaFile.createDir(cordova.file.documentsDirectory, SID, false)
+  $scope.setSID = function () {
+    $scope.newSID = $scope.userSID.data
+    console.log('Session ID set to: ' + $scope.newSID);
+    window.alert ('Your new session ID is ' + $scope.newSID);
+
+    dataShare.sendData($scope.newSID);
+   /* $cordovaFile.createDir(cordova.file.documentsDirectory, SID, false)
     .then(function (success) {
       console.log("New directory " + SID + " created.");
     }, function (error) {
       window.alert("Error: This Session ID has already been used.");
       console.log(error);
-    }); 
+    }); */
   }; 
 
 })

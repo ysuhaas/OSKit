@@ -24,7 +24,7 @@
 .new{
 	text-align: center;
 	font-size: 100%;
-	padding-top: 100px;
+	padding-top: 10px;
 }
 
 .connect-button{
@@ -36,4 +36,8 @@
 .submit {
 	padding-left: 25px;
 	padding-right: 25px;
+}
+
+.location {
+	text-align: center;
 }

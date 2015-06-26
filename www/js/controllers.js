@@ -37,12 +37,14 @@ angular.module('starter.controllers', [])
             states[Connection.NONE]     = 'No network connection';
 
       console.log('Connection type: ' + states[networkState]);
-
-      if (states[networkState] = 'No network connection') {
+      if (states[networkState] == 'WiFi connection') {
+        document.getElementById("connect-text").innerHTML = "Connection Status: WiFi Connection";
+      }
+      else if (states[networkState] == 'No network connection') {
         document.getElementById("connect-text").innerHTML = "Connection Status: No connection available";
       } 
       else {
-        document.getElementById("connect-text").innerHTML = "Connection Status: WiFi or Cellular Data Connection";
+        document.getElementById("connect-text").innerHTML = "Connection Status: Cellular Data Connection";
       }
 
   };
@@ -50,7 +52,7 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('ChatsCtrl', function($scope, $cordovaGeolocation, $cordovaFile, $cordovaFileTransfer, $ionicPlatform, $timeout, dataShare) {
+.controller('ChatsCtrl', function($scope, $cordovaDeviceMotion, $cordovaFile, $cordovaFileTransfer, $ionicPlatform, $timeout, dataShare) {
 
 //Defining Input Fields
   $scope.temp = {};

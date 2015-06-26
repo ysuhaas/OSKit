@@ -35,15 +35,14 @@ angular.module('starter.controllers', [])
             states[Connection.CELL_4G]  = 'Cell 4G connection';
             states[Connection.CELL]     = 'Cell generic connection';
             states[Connection.NONE]     = 'No network connection';
+
       console.log('Connection type: ' + states[networkState]);
-      if (states[networkState] = 'Wifi connection') {
-        document.getElementById("connect-text").innerHTML = "Connection Status: WiFi Connection";
-      }
-      else if (states[networkState] = 'No network connection') {
+
+      if (states[networkState] = 'No network connection') {
         document.getElementById("connect-text").innerHTML = "Connection Status: No connection available";
       } 
       else {
-        document.getElementById("connect-text").innerHTML = "Connection Status: Cellular Data Connection";
+        document.getElementById("connect-text").innerHTML = "Connection Status: WiFi or Cellular Data Connection";
       }
 
   };
@@ -210,7 +209,6 @@ angular.module('starter.controllers', [])
     })
   };
 
-
 // Upload function: Should upload all files in directory
   $scope.doUpload = function() {
     var url = "http://www7330.nrlssc.navy.mil/derada/AEC/upload.php";
@@ -289,15 +287,8 @@ angular.module('starter.controllers', [])
 
 
 
-/*$scope.dofUpload = function () {
-  setTimeout(function(){ alert("Files finished uploading."); }, 3000);
-};
 
-}) */
-
-
-
-.controller('AccountCtrl', function($scope, $cordovaDialogs, $cordovaFile, dataShare) {
+.controller('AccountCtrl', function($scope, $cordovaDialogs, $cordovaFile, dataShare, $cordovaCamera) {
   $scope.newSID = {};
   $scope.userSID = {};
   $scope.server = {};
@@ -330,6 +321,7 @@ angular.module('starter.controllers', [])
         }
       });
   };
+
 //Updates the Session ID
   $scope.setSID = function () {
     $scope.newSID = $scope.userSID.data
@@ -349,4 +341,26 @@ angular.module('starter.controllers', [])
 
 
 .controller('CameraCtrl', function($scope) {
+//Picture function
+$scope.picture = function() {
+     var options = {
+      quality: 50,
+      destinationType: Camera.DestinationType.DATA_URL,
+      sourceType: Camera.PictureSourceType.CAMERA,
+      allowEdit: true,
+      encodingType: Camera.EncodingType.JPEG,
+      targetWidth: 100,
+      targetHeight: 100,
+      popoverOptions: CameraPopoverOptions,
+      saveToPhotoAlbum: false
+    };
+
+    $cordovaCamera.getPicture(options).then(function(imageData) {
+      var image = document.getElementById('myImage');
+      image.src = "data:image/jpeg;base64," + imageData;
+    }, function(err) {
+      // error
+    });
+  }
+
   })

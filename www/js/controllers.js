@@ -52,7 +52,7 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('ChatsCtrl', function($scope, $cordovaDeviceMotion, $cordovaGeolocation, $cordovaFile, $cordovaFileTransfer, $ionicPlatform, $timeout, dataShare) {
+.controller('ChatsCtrl', function($scope, $cordovaProgress, $cordovaDeviceMotion, $cordovaGeolocation, $cordovaFile, $cordovaFileTransfer, $ionicPlatform, $cordovaToast, $timeout, dataShare) {
 
 //Defining Input Fields
   $scope.temp = {};
@@ -123,6 +123,7 @@ angular.module('starter.controllers', [])
         $scope.tempfiles.push($scope.fileName);
         var form = document.getElementById("temp");
         form.reset();
+        $cordovaToast.show('File successfully saved.', 'short', 'center').then(function(success) {}, function (error) {});
       }, function (error) {
         console.log("File not saved");
         console.log("ERROR: " + error);
@@ -150,6 +151,7 @@ angular.module('starter.controllers', [])
         $scope.salinfiles.push($scope.fileName);
         var form = document.getElementById("salin");
         form.reset();
+        $cordovaToast.show('File successfully saved.', 'short', 'center').then(function(success) {}, function (error) {});
       }, function (error) {
         console.log("File not saved");
         console.log("ERROR: " + error);
@@ -177,6 +179,7 @@ angular.module('starter.controllers', [])
         $scope.sechifiles.push($scope.fileName);
         var form = document.getElementById("sechi");
         form.reset();
+        $cordovaToast.show('File successfully saved.', 'short', 'center').then(function(success) {}, function (error) {});
       }, function (error) {
         console.log("File not saved");
         console.log("ERROR: " + error);
@@ -202,7 +205,8 @@ angular.module('starter.controllers', [])
         console.log('File successfully saved: ' + $scope.fileName);
         $scope.weatherfiles.push($scope.fileName);
         var form = document.getElementById("weather");
-        form.reset(); 
+        form.reset();
+        $cordovaToast.show('File successfully saved.', 'short', 'center').then(function(success) {}, function (error) {}); 
       }, function (error) {
         console.log("File not saved");
         console.log("ERROR: " + error);
@@ -349,27 +353,30 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('CameraCtrl', function($scope) {
-//Picture function
-$scope.picture = function() {
-     var options = {
-      quality: 50,
-      destinationType: Camera.DestinationType.DATA_URL,
-      sourceType: Camera.PictureSourceType.CAMERA,
-      allowEdit: true,
-      encodingType: Camera.EncodingType.JPEG,
-      targetWidth: 100,
-      targetHeight: 100,
-      popoverOptions: CameraPopoverOptions,
-      saveToPhotoAlbum: false
+
+.controller('CameraCtrl', function($scope, $cordovaCamera, $ionicPlatform) {
+  $ionicPlatform.ready(function() {  
+    $scope.picture = function () {
+      var options = {
+        quality: 50,
+        destinationType: Camera.DestinationType.DATA_URL,
+        sourceType: Camera.PictureSourceType.CAMERA,
+        allowEdit: true,
+        encodingType: Camera.EncodingType.JPEG,
+        targetWidth: 100,
+        targetHeight: 100,
+        popoverOptions: CameraPopoverOptions,
+        saveToPhotoAlbum: false
+      };
+
+      $cordovaCamera.getPicture(options).then(function(imageData) {
+        var image = document.getElementById('myImage');
+        image.src = "data:image/jpeg;base64," + imageData;
+        $scope.imgURI = "data:image/jpeg;base64," + imageData;
+      }, function(err) {
+        // error
+      });
     };
+  });
+})
 
-    $cordovaCamera.getPicture(options).then(function(imageData) {
-      var image = document.getElementById('myImage');
-      image.src = "data:image/jpeg;base64," + imageData;
-    }, function(err) {
-      // error
-    });
-  }
-
-  })

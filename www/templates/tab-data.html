@@ -46,21 +46,27 @@
     <form ng-submit = "doSave1()" id="temp">
       <div class ="card">
         <div class="item item-divider">
-          Water Temperature (°C) <br> <br>
-            <label class="item item-input">
-              <input type="number"  placeholder="Temperature: 0-40°C" ng-model="temp.data">
-            </label>
-            <label class="item item-input">
-              <input type="number"  placeholder="Depth: 0-100 m" ng-model="temp.depth">
-            </label>  
-            <div class ="row">
-              <div class ="col col-66">
-                <button class="button button-block button-royal" type="submit">
-                Save
-                </button>
-              </div>
-              <div class ="col col-offset-10" id="counter-1">0</div>     
+          Water Temperature (°C) <br> 
+          <div class="row">
+            <div class="col col-35">
+              <label class="item item-input">
+                <input type="number"  placeholder="Temperature: 0-40°C" ng-model="temp.data">
+              </label>
             </div>
+            <div class="col col-35">
+              <label class="item item-input">
+                <input type="number"  placeholder="Depth: 0-100 m" ng-model="temp.depth">
+              </label>
+            </div>
+            <div class ="col col-20">
+              <button class="button button-block button-royal" type="submit">
+              Save
+              </button>
+            </div>
+            <div class ="col col-10" id="counter-1">
+            0
+            </div>     
+          </div>
         </div>
       </div>
     </form>
@@ -70,20 +76,26 @@
     <form ng-submit ="doSave2()" id="salin">
       <div class ="card">
         <div class="item item-divider">
-          Water Salinity (psu) <br> <br>
-            <label class="item item-input">
-              <input type="number"  placeholder="Salinity: 0-40 psu" ng-model="salin.data">
-            </label>
-            <label class="item item-input">
-              <input type="number"  placeholder="Depth: 0-100 m" ng-model="salin.depth">
-            </label>   
-            <div class ="row">
-              <div class ="col col-66">
-                <button class ="button button-block button-royal" type="submit">
-                  Save
+          Water Salinity (psu) <br> 
+            <div class="row">
+              <div class="col col-35">
+                <label class="item item-input">
+                  <input type="number"  placeholder="Temperature: 0-40°C" ng-model="salin.data">
+                </label>
+              </div>
+              <div class="col col-35">
+                <label class="item item-input">
+                  <input type="number"  placeholder="Depth: 0-100 m" ng-model="salin.depth">
+                </label>
+              </div>
+              <div class ="col col-20">
+                <button class="button button-block button-royal" type="submit">
+                Save
                 </button>
               </div>
-              <div class="col col-offset-10" id="counter-2">0</div>
+              <div class ="col col-10" id="counter-2">
+              0
+              </div>     
             </div>
         </div>
       </div>
@@ -94,43 +106,46 @@
     <form ng-submit ="doSave3()" id="sechi">
       <div class ="card">
         <div class="item item-divider">
-          Sechi Disk Depth (m) <br> <br>
-            <label class="item item-input">
-              <input type="number"  placeholder="Depth: 0-100 m" ng-model="sechi.depth">
-            </label>   
-            <div class ="row">
-              <div class ="col col-66">
-                <button class ="button button-block button-royal" type="submit">
-                  Save
-                </button>
-              </div>
-              <div class="col col-offset-10" id="counter-3"><br>
-                0
-              </div>
+          Sechi Disk Depth (m) <br> 
+          <div class="row">
+            <div class="col col-70">
+              <label class="item item-input">
+                <input type="number"  placeholder="Depth: 0-100 m" ng-model="sechi.depth">
+              </label>
+            </div>
+            <div class ="col col-20">
+              <button class ="button button-block button-royal" type="submit">
+              Save
+              </button>
+            </div>
+            <div class="col col-10" id="counter-3"><br>
+            0
             </div>
           </div>
         </div>
-      </form>
+      </div>
+    </form>
 
 
 <!--Weather Slider Input Field -->
       <form ng-submit ="doSave4()" id="weather">
         <div class ="card">
           <div class="item item-divider">
-            <div class="item range">
-              Weather:
-              <i class="icon ion-ios-sunny"></i>
-              <input type="range" name="weather" min="0" max="100" value="50" step="10" ng-model="weather.data">
-              <i class="icon ion-ios-rainy"></i>
-            </div>  
-            <div class ="row">
-              <div class ="col col-66">
+            Weather:
+            <div class="row">
+              <div class="col col-70">
+                <div class="item range">
+                  <i class="icon ion-ios-sunny"></i>
+                  <input type="range" name="weather" min="0" max="100" value="50" step="10" ng-model="weather.data">
+                  <i class="icon ion-ios-rainy"></i>
+                </div> 
+              </div> 
+              <div class="col col-20">
                 <button class ="button button-block button-royal" type="submit">
-                  Save
+                Save
                 </button>
               </div>
-              <div class="col col-offset-10" id="counter-4"><br>
-              0
+              <div class="col col-10" id="counter-4">0
               </div>
             </div>
           </div>

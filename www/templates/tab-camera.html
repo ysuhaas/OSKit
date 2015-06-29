@@ -1,11 +1,20 @@
 <ion-view view-title="Take Picture">
   <ion-content>
-  <br>
-  	<div class = "camera-button" ng-click="picture()">
-  		<button class = "button button-block button-royal">
-  		
+  	<div class = "camera-button item">
+  		<button class = "button button-block button-royal" ng-click="picture()">
   			<i class = "icon ion-camera"></i>
   		</button>
   	</div>
+  	<div class = "picture item">
+  		<img ng-show="imgURI !== undefined" ng-src="{{imgURI}}">
+	</div>
+	<div class = "text item">
+		<input type = "text" placeholder="Enter a brief synopsis. (optional)" name="synopsis" maxlength="600">
+	</div>
+  	 <div class="submit item">
+        <button class="button button-block button-positive" type="submit" ng-click= "doUpload()">
+        Upload
+        </button>
+    </div> 
   <ion-content>
 </ion-view>

@@ -46,3 +46,11 @@
 	padding-right: 10px;
 	text-align: center;
 }
+.button.button-block{
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+.col-10{
+	text-align: center;
+	vertical-align: middle;
+}

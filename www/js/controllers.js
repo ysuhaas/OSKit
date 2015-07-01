@@ -19,7 +19,10 @@ angular.module('starter.controllers', [])
   return service;
 })
 
-
+.config(function($compileProvider){
+  $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
+})
+//Each tab has its own template and controller
 
 .controller('DashCtrl', function($scope) {
  
@@ -52,9 +55,11 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('ChatsCtrl', function($scope, $cordovaProgress, $cordovaDeviceMotion, $cordovaGeolocation, $cordovaFile, $cordovaFileTransfer, $ionicPlatform, $cordovaToast, $timeout, dataShare) {
+.controller('ChatsCtrl', function($scope, $cordovaDialogs, $cordovaDeviceMotion, $cordovaGeolocation, $cordovaFile, $cordovaFileTransfer, $ionicPlatform, $cordovaToast, $timeout, dataShare) {
 
-//Defining Input Fields
+//Defining Scope Variables
+
+//Input Fields and Other Data
   $scope.temp = {};
   $scope.salin = {};
   $scope.sechi = {};
@@ -63,14 +68,19 @@ angular.module('starter.controllers', [])
   $scope.loc = {};
   $scope.fileName = "";
   $scope.data = "";
+//DOM Counters
   $scope.counter1 = 0;
   $scope.counter2 = 0;
   $scope.counter3 = 0;
   $scope.counter4 = 0;
+//Filename arrays to loop through for uploading
   $scope.tempfiles = [];
   $scope.salinfiles = [];
   $scope.sechifiles = [];
   $scope.weatherfiles = [];
+//Upload Success/Fail
+  $scope.uploadnumber = 0;
+  $scope.failnumber = 0;
 
 //Retrieves SID from Settings Controller
   $scope.SID = {};
@@ -100,7 +110,7 @@ angular.module('starter.controllers', [])
       $scope.loc.DTG = position.coords.timestamp
       $scope.loc.speed = position.coords.speed 
       var lochtml = $scope.loc.lat + ', ' + $scope.loc.lon;
-      document.getElementById("location").innerHTML = lochtml
+      document.getElementById("location").innerHTML = "Your location is: " + "<br>" + lochtml;
       console.log(lochtml);
     }, function(err) {
       document.getElementById("location").innerHTML = "Location Unavailable."
@@ -114,8 +124,6 @@ angular.module('starter.controllers', [])
       var DTG = Date.now()
       var data = $scope.temp.data + ', ' + $scope.temp.depth + ', ' + $scope.loc.lat + ', ' + $scope.loc.lon + ', ' + $scope.loc.acc + ', ' + $scope.loc.alti + ', ' + $scope.loc.heading + ', ' + $scope.loc.speed;
       var variable = "temperature";
-      $scope.counter1 += 1;
-      document.getElementById("counter-1").innerHTML = $scope.counter1;
       $scope.fileName = SID + "_" + variable + "_" + DTG + ".oskit";
       $cordovaFile.writeFile(cordova.file.documentsDirectory, $scope.fileName, data, true)
       .then(function (success) {
@@ -123,8 +131,11 @@ angular.module('starter.controllers', [])
         $scope.tempfiles.push($scope.fileName);
         var form = document.getElementById("temp");
         form.reset();
+        $scope.counter1 += 1;
+        document.getElementById("counter-1").innerHTML = $scope.counter1;
         $cordovaToast.show('File successfully saved.', 'short', 'center').then(function(success) {}, function (error) {});
       }, function (error) {
+        $cordovaToast.show('Error saving file', 'short', 'center').then(function(success) {}, function (error) {});
         console.log("File not saved");
         console.log("ERROR: " + error);
       });
@@ -142,8 +153,6 @@ angular.module('starter.controllers', [])
       var DTG = Date.now()
       var data = $scope.salin.data + ', ' + $scope.salin.depth + ', ' + $scope.loc.lat + ', ' + $scope.loc.lon + ', ' + $scope.loc.acc + ', ' + $scope.loc.alti + ', ' + $scope.loc.heading + ', ' + $scope.loc.speed;
       var variable = "salinity";
-      $scope.counter2 += 1;
-      document.getElementById("counter-2").innerHTML = $scope.counter2;
       $scope.fileName = SID + "_" + variable + "_" + DTG + ".oskit";
       $cordovaFile.writeFile(cordova.file.documentsDirectory, $scope.fileName, data, true)
       .then(function (success) {
@@ -151,8 +160,11 @@ angular.module('starter.controllers', [])
         $scope.salinfiles.push($scope.fileName);
         var form = document.getElementById("salin");
         form.reset();
+        $scope.counter2 += 1;
+        document.getElementById("counter-2").innerHTML = $scope.counter2;
         $cordovaToast.show('File successfully saved.', 'short', 'center').then(function(success) {}, function (error) {});
       }, function (error) {
+        $cordovaToast.show('Error saving file', 'short', 'center').then(function(success) {}, function (error) {});
         console.log("File not saved");
         console.log("ERROR: " + error);
       });
@@ -170,8 +182,6 @@ angular.module('starter.controllers', [])
       var DTG = Date.now()
       var data = $scope.sechi.depth + ', ' + $scope.loc.lat + ', ' + $scope.loc.lon + ', ' + $scope.loc.acc + ', ' + $scope.loc.alti + ', ' + $scope.loc.heading + ', ' + $scope.loc.speed;
       var variable = "sechi";
-      $scope.counter3 += 1;
-      document.getElementById("counter-3").innerHTML = $scope.counter3;
       $scope.fileName = SID + "_" + variable + "_" + DTG + ".oskit";
       $cordovaFile.writeFile(cordova.file.documentsDirectory, $scope.fileName, data, true)
       .then(function (success) {
@@ -179,8 +189,11 @@ angular.module('starter.controllers', [])
         $scope.sechifiles.push($scope.fileName);
         var form = document.getElementById("sechi");
         form.reset();
+        $scope.counter3 += 1;
+        document.getElementById("counter-3").innerHTML = $scope.counter3;
         $cordovaToast.show('File successfully saved.', 'short', 'center').then(function(success) {}, function (error) {});
       }, function (error) {
+        $cordovaToast.show('Error saving file', 'short', 'center').then(function(success) {}, function (error) {});
         console.log("File not saved");
         console.log("ERROR: " + error);
       });
@@ -197,8 +210,6 @@ angular.module('starter.controllers', [])
       var DTG = Date.now();
       var data = $scope.weather.data + ', ' + $scope.loc.lat + ', ' + $scope.loc.lon + ', ' + $scope.loc.acc + ', ' + $scope.loc.alti + ', ' + $scope.loc.heading + ', ' + $scope.loc.speed;
       var variable = "weather";
-      $scope.counter4 += 1;
-      document.getElementById("counter-4").innerHTML = $scope.counter4;
       $scope.fileName = SID + "_" + variable + "_" + DTG + ".oskit";
       $cordovaFile.writeFile(cordova.file.documentsDirectory, $scope.fileName, data, true)
       .then(function (success) {
@@ -206,8 +217,11 @@ angular.module('starter.controllers', [])
         $scope.weatherfiles.push($scope.fileName);
         var form = document.getElementById("weather");
         form.reset();
+        $scope.counter4 += 1;
+        document.getElementById("counter-4").innerHTML = $scope.counter4;
         $cordovaToast.show('File successfully saved.', 'short', 'center').then(function(success) {}, function (error) {}); 
       }, function (error) {
+        $cordovaToast.show('Error saving file', 'short', 'center').then(function(success) {}, function (error) {});
         console.log("File not saved");
         console.log("ERROR: " + error);
       });
@@ -226,7 +240,9 @@ angular.module('starter.controllers', [])
       console.log("SUCCESS: " + JSON.stringify(result.response));
       var form1 = document.getElementById("temp");
       form1.reset();
+      $scope.uploadnumber = $scope.uploadnumber + 1;
       }, function(err) {
+      $scope.failnumber = $scope.failnumber + 1;
       console.log("ERROR: " + JSON.stringify(err));
       //Can add error codes/handlers here
       }, function (progress) {
@@ -245,7 +261,9 @@ angular.module('starter.controllers', [])
       console.log("SUCCESS: " + JSON.stringify(result.response));
       var form2 = document.getElementById("salin");
       form2.reset();
+      $scope.uploadnumber = $scope.uploadnumber + 1;
       }, function(err) {
+      $scope.failnumber = $scope.failnumber + 1;
       console.log("ERROR: " + JSON.stringify(err));
       //Can add error codes/handlers here
       }, function (progress) {
@@ -263,8 +281,10 @@ angular.module('starter.controllers', [])
       .then(function(result) {
       console.log("SUCCESS: " + JSON.stringify(result.response));
       var form3 = document.getElementById("sechi");
-      form3.reset(); 
+      form3.reset();
+      $scope.uploadnumber = $scope.uploadnumber + 1;
       }, function(err) {
+      $scope.failnumber = $scope.failnumber + 1;
       console.log("ERROR: " + JSON.stringify(err));
       //Can add error codes/handlers here
       }, function (progress) {
@@ -283,7 +303,9 @@ angular.module('starter.controllers', [])
       console.log("SUCCESS: " + JSON.stringify(result.response));
       var form4 = document.getElementById("weather");
       form4.reset();
+      $scope.uploadnumber = $scope.uploadnumber + 1;
       }, function(err) {
+      $scope.failnumber = $scope.failnumber + 1;
       console.log("ERROR: " + JSON.stringify(err));
       //Can add error codes/handlers here
       }, function (progress) {
@@ -292,6 +314,10 @@ angular.module('starter.controllers', [])
       })
       })  
     }
+  //    $cordovaDialogs.alert('Files uploaded: ' + $scope.uploadnumber + 'Files failed: ' + $scope.failnumber, 'Upload Status', 'OK')
+    //.then(function() {
+      // callback success
+   // });
   };
 })
 
@@ -354,29 +380,107 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('CameraCtrl', function($scope, $cordovaCamera, $ionicPlatform) {
-  $ionicPlatform.ready(function() {  
-    $scope.picture = function () {
-      var options = {
-        quality: 50,
-        destinationType: Camera.DestinationType.DATA_URL,
-        sourceType: Camera.PictureSourceType.CAMERA,
-        allowEdit: true,
-        encodingType: Camera.EncodingType.JPEG,
-        targetWidth: 100,
-        targetHeight: 100,
-        popoverOptions: CameraPopoverOptions,
-        saveToPhotoAlbum: false
-      };
+.controller('CameraCtrl', function($scope, $timeout, $cordovaCamera, $ionicPlatform, $cordovaFile, $cordovaFileTransfer, $cordovaToast, dataShare) {
+ $scope.img = {};
+ $scope.image = {};
+ $scope.SIDpic = {};
+ $scope.imagefiles = [];
+ $scope.datafiles = [];
+ $scope.counterimg = 0;
+  $scope.$on('data_shared', function(){
+    var userSID = dataShare.getData();
+    $scope.SIDpic.data = userSID;
+  });
+  $scope.getPhoto = function(){
+    var options = {
+      quality: 50,
+      destinationType: Camera.DestinationType.FILE_URI,
+      sourceType: Camera.PictureSourceType.CAMERA,
+      allowEdit: true,
+      encodingType: Camera.EncodingType.PNG,
+      targetWidth: 300,
+      targetHeight: 300,
+      popoverOptions: CameraPopoverOptions,
+      saveToPhotoAlbum: false
+    };
 
-      $cordovaCamera.getPicture(options).then(function(imageData) {
+    $ionicPlatform.ready(function() {
+        $cordovaCamera.getPicture(options).then(function(imageURI) {
         var image = document.getElementById('myImage');
-        image.src = "data:image/jpeg;base64," + imageData;
-        $scope.imgURI = "data:image/jpeg;base64," + imageData;
+        image.src = imageURI;
+        console.log(imageURI);
+        $scope.image.data = image.src;
       }, function(err) {
         // error
       });
-    };
-  });
+    });
+  };
+
+  $scope.savePic = function(){
+    if ($scope.img.name == undefined){
+      var imagename = $scope.SIDpic.data + "_photo_" + Date.now();
+    }
+    else{
+      var imagename = $scope.SIDpic.data + "_" + $scope.img.name; + "_" + Date.now();
+    }
+
+    $cordovaFile.writeFile(cordova.file.documentsDirectory, imagename + ".png", $scope.image.data, true)
+      .then(function (success) {
+        $cordovaToast.show('Picture saved successfully.', 'short', 'center').then(function(success) {}, function (error) {});
+        $scope.imagefiles.push(imagename + ".png");
+        
+        $scope.counterimg = $scope.counterimg + 1;
+        document.getElementById("counter-img").innerHTML = $scope.counterimg;
+      }, function (error) {  
+      })
+    $cordovaFile.writeFile(cordova.file.documentsDirectory, imagename + ".oskit" , $scope.img.syn, true)
+    .then(function (success) {
+      $scope.datafiles.push(imagename + ".oskit");
+      
+        var formtext = document.getElementById("image");
+        formtext.reset();
+      $cordovaToast.show('Data saved successfully.', 'short', 'center').then(function(success){}, function (error) {});
+    })
+
+  }
+
+  $scope.doImageUpload = function (){
+    var url = "http://www7330.nrlssc.navy.mil/derada/AEC/upload.php";
+    for (var i = 0; i < $scope.imagefiles.length; i++){
+      var targetPath = cordova.file.documentsDirectory + $scope.imagefiles[i];
+      console.log($scope.imagefiles[i]);
+      var filesname = targetPath.split("/").pop();
+      var options = {fileKey: "filename", fileName: filesname, chunkedMode: false, mimeType: "image/jpeg"};
+      $cordovaFileTransfer.upload(url, targetPath, options)
+      .then(function(result) {
+      console.log("SUCCESS: " + JSON.stringify(result.response));
+      }, function(err) {
+      console.log("ERROR: " + JSON.stringify(err));
+      }, function (progress) {
+      $timeout(function () {
+      $scope.downloadProgress = (progress.loaded / progress.total) * 100;
+      })
+      })  
+    }
+    for (var i = 0; i < $scope.datafiles.length; i++){
+      var targetPath = cordova.file.documentsDirectory + $scope.datafiles[i];
+      var filesname = targetPath.split("/").pop();
+      var options = {fileKey: "filename", fileName: filesname, chunkedMode: false, mimeType: "text/plain"};
+      $cordovaFileTransfer.upload(url, targetPath, options)
+      .then(function(result) {
+      console.log("SUCCESS: " + JSON.stringify(result.response));
+      }, function(err) {
+      console.log("ERROR: " + JSON.stringify(err));
+      }, function (progress) {
+      $timeout(function () {
+      $scope.downloadProgress = (progress.loaded / progress.total) * 100;
+      })
+      })  
+    }
+  }
+
 })
+
+
+
 

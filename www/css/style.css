@@ -11,21 +11,43 @@
 	padding-right: 20px;
 }
 
+
+
+
+/*Data Tab*/
 .oskit{
 	text-align: right;
-    height: 50px;
 }
+.new{
+	text-align: left;
+}
+.location{
+	text-align: center;
+	vertical-align: middle;
+}
+
+.upload-pic{
+	padding-left: 25px;
+	padding-right: 25px;
+}
+
+.counter-img{
+	text-align: center;
+	vertical-align: middle;
+}
+
+
+textarea {
+    resize: none;
+}
+
 
 .nrl {
     height: 50px;
     width:10px;
 }
 
-.new{
-	text-align: center;
-	font-size: 100%;
-	padding-top: 10px;
-}
+
 
 .connect-button{
 	padding-left: 20px;
@@ -38,9 +60,6 @@
 	padding-right: 25px;
 }
 
-.location {
-	text-align: center;
-}
 .camera-button {
 	padding-left: 10px;
 	padding-right: 10px;

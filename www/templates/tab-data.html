@@ -1,47 +1,27 @@
 <ion-view view-title="Record Data">
+
+
+<!--Info Icon in Header-->
+  <ion-nav-buttons side="right">
+    <button class="button button-icon icon ion-ios-information-outline" ng-click="showModal()">
+    </button>
+  </ion-nav-buttons>
   <ion-content>
- <!--Logos-->
-   <!-- <div class="row">
-      <div class="col col-33 nrl">  
-        <img src= "/nrl.png">
+
+
+<!--Logos-->
+    <div class = "row">
+      <div class = "col new"> 
+        <img src= "nrl.png">
       </div>
-      <div class="col col-33 new" id="location">  
-        OSKit Mobile Application
+      <div class = "col location" id="location">
       </div>
-      <div class="col col-33 oskit">       
-        <img src=" /oskit.jpg">
+      <div class = "col oskit">
+        <img src= "oskit.jpg">
       </div>
     </div>
-    <br>
-    <br> -->
     
-      <div class = "new">
-        <img src= "/nrl.png">
-      </div>
-      <div class="container location" id="location">
-    </div>
 
-      
-<!--Session ID Input Field
-    <form ng-submit= "getSID()">
-      <div class ="card">
-        <div class="item item-divider">
-          Session ID 
-          <div class="list list-inset">
-            <label class="item item-input">
-              <input type="text"  placeholder="Enter a unique Session ID."ng-model="userSID.data">
-            </label>  
-          </div>    
-        <div class="container">
-          <button class="button button-royal button-block" type="submit">
-          Save
-          </button>
-        </div>
-        </div>
-      </div>
-    </form> -->
-
- 
 <!--Temperature Input Field-->
     <form ng-submit = "doSave1()" id="temp">
       <div class ="card">
@@ -154,17 +134,11 @@
 
 
 <!--Upload Button-->
-<!--<form enctype="multipart/form-data" action="http://www7330.nrlssc.navy.mil/derada/AEC/upload.php" method="POST">
-  <input type ="text" name="filename">
-  <input type="submit" value="upload">
-  </form> -->
-
-     <div class="submit">
-        <button class="button button-block button-positive" type="submit" ng-click= "doUpload()">
-          Upload
-        </button>
-      </div> 
-
+    <div class="submit">
+      <button class="button button-block button-balanced" type="submit" ng-click= "doUpload()">
+      Upload
+      </button>
+    </div> 
 
   </ion-content>
 </ion-view>

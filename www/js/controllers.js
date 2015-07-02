@@ -61,7 +61,7 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('ChatsCtrl', function($scope, $cordovaGeolocation, $cordovaFile, $cordovaFileTransfer, $ionicPlatform, $ionicModal, $cordovaToast, $timeout, dataShare) {
+.controller('ChatsCtrl', function($scope, $cordovaGeolocation, $cordovaDialogs, $cordovaFile, $cordovaFileTransfer, $ionicPlatform, $ionicModal, $cordovaToast, $timeout, dataShare) {
 
 //Defining Scope Variables
 
@@ -104,13 +104,13 @@ angular.module('starter.controllers', [])
             'Heading: '           + position.coords.heading           + '\n' +
             'Speed: '             + position.coords.speed             + '\n' +
             'Timestamp: '         + position.timestamp                + '\n');*/
-      $scope.loc.lat = position.coords.latitude
-      $scope.loc.lon = position.coords.longitude
-      $scope.loc.alti = position.coords.altitude 
-      $scope.loc.acc = position.coords.accuracy
-      $scope.loc.head = position.coords.heading
-      $scope.loc.DTG = position.coords.timestamp
-      $scope.loc.speed = position.coords.speed 
+      $scope.loc.lat = position.coords.latitude;
+      $scope.loc.lon = position.coords.longitude;
+      $scope.loc.alti = position.coords.altitude;
+      $scope.loc.acc = position.coords.accuracy;
+      $scope.loc.head = position.coords.heading;
+      $scope.loc.DTG = position.coords.timestamp;
+      $scope.loc.speed = position.coords.speed; 
       var lochtml = $scope.loc.lat + ', ' + $scope.loc.lon;
       document.getElementById("location").innerHTML = "Your location is: " + "<br>" + lochtml;
       console.log(lochtml);
@@ -124,7 +124,7 @@ angular.module('starter.controllers', [])
     if (($scope.temp.data > 0 && $scope.temp.data < 40) && ($scope.temp.depth > 0 && $scope.temp.depth < 100)) {
     $ionicPlatform.ready(function() {
       var SID = $scope.SID.data;
-      var DTG = Date.now()
+      var DTG = Date.now();
       var data = $scope.temp.data + ', ' + $scope.temp.depth + ', ' + $scope.loc.lat + ', ' + $scope.loc.lon + ', ' + $scope.loc.acc + ', ' + $scope.loc.alti + ', ' + $scope.loc.heading + ', ' + $scope.loc.speed;
       var variable = "temperature";
       $scope.fileName = SID + "_" + variable + "_" + DTG + ".oskit";
@@ -143,14 +143,15 @@ angular.module('starter.controllers', [])
       });
     })
     } else {
-      window.alert("Your values are not within the tolerances. Please check them and resubmit.")
+      //window.alert("Your values are not within the tolerances. Please check them and resubmit.");
+      $cordovaDialogs.alert('Your values are not within the tolerances. Please check them and resubmit.', 'Error');
     }
   };
   $scope.doSave2 = function() {
     if (($scope.salin.data > 0 && $scope.salin.data < 40) && ($scope.salin.depth > 0 && $scope.salin.depth < 100)) {
     $ionicPlatform.ready(function() {
       var SID = $scope.SID.data;
-      var DTG = Date.now()
+      var DTG = Date.now();
       var data = $scope.salin.data + ', ' + $scope.salin.depth + ', ' + $scope.loc.lat + ', ' + $scope.loc.lon + ', ' + $scope.loc.acc + ', ' + $scope.loc.alti + ', ' + $scope.loc.heading + ', ' + $scope.loc.speed;
       var variable = "salinity";
       $scope.fileName = SID + "_" + variable + "_" + DTG + ".oskit";
@@ -170,13 +171,14 @@ angular.module('starter.controllers', [])
     })
     } else {
       window.alert("Your values are not within the tolerances. Please check them and resubmit.")
+      $cordovaDialogs.alert('Your values are not within the tolerances. Please check them and resubmit.', 'Error');
     }
   };
   $scope.doSave3 = function() {
     if ($scope.sechi.depth > 0 && $scope.sechi.depth < 100) {
     $ionicPlatform.ready(function() {
       var SID = $scope.SID.data;
-      var DTG = Date.now()
+      var DTG = Date.now();
       var data = $scope.sechi.depth + ', ' + $scope.loc.lat + ', ' + $scope.loc.lon + ', ' + $scope.loc.acc + ', ' + $scope.loc.alti + ', ' + $scope.loc.heading + ', ' + $scope.loc.speed;
       var variable = "sechi";
       $scope.fileName = SID + "_" + variable + "_" + DTG + ".oskit";
@@ -196,6 +198,7 @@ angular.module('starter.controllers', [])
     })
     } else {
       window.alert("Your values are not within the tolerances. Please check them and resubmit.")
+      $cordovaDialogs.alert('Your values are not within the tolerances. Please check them and resubmit.', 'Error');
     }
   };
   $scope.doSave4 = function() {
@@ -333,6 +336,7 @@ $ionicModal.fromTemplateUrl('intro1-modal.html', {
   $scope.setSID = function () {
     $scope.newSID = $scope.userSID.data
     console.log('Session ID set to: ' + $scope.newSID);
+    $cordovaDialogs.alert('Your new session ID is ' + $scope.newSID, 'Session ID');
     window.alert ('Your new session ID is ' + $scope.newSID);
     dataShare.sendData($scope.newSID);
     $cordovaFile.createDir(cordova.file.documentsDirectory, $scope.newSID, false)
@@ -355,8 +359,10 @@ $ionicModal.fromTemplateUrl('intro1-modal.html', {
               var form5 = document.getElementById("sid");
               form5.reset();
               window.alert("Files successfully deleted.");
+              $cordovaDialogs.alert('Files successfully deleted.', 'Local Cache');
             }, function (error) {
               window.alert("Error deleting files.");
+              $cordovaDialogs.alert('Error deleting files.', 'Local Cache');
               console.log(error);
             });
             var form1 = document.getElementById("temp");

@@ -6,6 +6,9 @@ angular.module('starter.controllers', [])
   //
   //$scope.$on('$ionicView.enter', function(e) {
   //});
+
+
+//This shared service transfers the Session ID between controllers.
 .factory('dataShare',function($rootScope){
   var service = {};
   service.data = false;
@@ -19,10 +22,13 @@ angular.module('starter.controllers', [])
   return service;
 })
 
+
+//Whitelists image URIs (may not be necessary)
 .config(function($compileProvider){
   $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
 })
-//Each tab has its own template and controller
+
+
 
 .controller('DashCtrl', function($scope) {
  
@@ -55,7 +61,7 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('ChatsCtrl', function($scope, $cordovaDialogs, $cordovaDeviceMotion, $cordovaGeolocation, $cordovaFile, $cordovaFileTransfer, $ionicPlatform, $cordovaToast, $timeout, dataShare) {
+.controller('ChatsCtrl', function($scope, $cordovaGeolocation, $cordovaFile, $cordovaFileTransfer, $ionicPlatform, $ionicModal, $cordovaToast, $timeout, dataShare) {
 
 //Defining Scope Variables
 
@@ -67,7 +73,6 @@ angular.module('starter.controllers', [])
   $scope.userSID = {};
   $scope.loc = {};
   $scope.fileName = "";
-  $scope.data = "";
 //DOM Counters
   $scope.counter1 = 0;
   $scope.counter2 = 0;
@@ -78,9 +83,6 @@ angular.module('starter.controllers', [])
   $scope.salinfiles = [];
   $scope.sechifiles = [];
   $scope.weatherfiles = [];
-//Upload Success/Fail
-  $scope.uploadnumber = 0;
-  $scope.failnumber = 0;
 
 //Retrieves SID from Settings Controller
   $scope.SID = {};
@@ -113,10 +115,11 @@ angular.module('starter.controllers', [])
       document.getElementById("location").innerHTML = "Your location is: " + "<br>" + lochtml;
       console.log(lochtml);
     }, function(err) {
-      document.getElementById("location").innerHTML = "Location Unavailable."
+      document.getElementById("location").innerHTML = "Location Unavailable.";
     })
 
-//Parent export function: Should save file, tick up counter, and clear field (Individual saves for now)
+//Export function: Should save file, tick up counter, and clear field (Individual saves for now)
+//There should be a way to have a single save function with different arguments being passed to indicate the data type
   $scope.doSave1 = function() {
     if (($scope.temp.data > 0 && $scope.temp.data < 40) && ($scope.temp.depth > 0 && $scope.temp.depth < 100)) {
     $ionicPlatform.ready(function() {
@@ -136,16 +139,13 @@ angular.module('starter.controllers', [])
         $cordovaToast.show('File successfully saved.', 'short', 'center').then(function(success) {}, function (error) {});
       }, function (error) {
         $cordovaToast.show('Error saving file', 'short', 'center').then(function(success) {}, function (error) {});
-        console.log("File not saved");
-        console.log("ERROR: " + error);
+        console.log("Error saving file: " + error);
       });
     })
     } else {
       window.alert("Your values are not within the tolerances. Please check them and resubmit.")
     }
   };
-
-
   $scope.doSave2 = function() {
     if (($scope.salin.data > 0 && $scope.salin.data < 40) && ($scope.salin.depth > 0 && $scope.salin.depth < 100)) {
     $ionicPlatform.ready(function() {
@@ -165,16 +165,13 @@ angular.module('starter.controllers', [])
         $cordovaToast.show('File successfully saved.', 'short', 'center').then(function(success) {}, function (error) {});
       }, function (error) {
         $cordovaToast.show('Error saving file', 'short', 'center').then(function(success) {}, function (error) {});
-        console.log("File not saved");
-        console.log("ERROR: " + error);
+        console.log("Error saving file: " + error);
       });
     })
     } else {
       window.alert("Your values are not within the tolerances. Please check them and resubmit.")
     }
   };
-
-
   $scope.doSave3 = function() {
     if ($scope.sechi.depth > 0 && $scope.sechi.depth < 100) {
     $ionicPlatform.ready(function() {
@@ -194,16 +191,13 @@ angular.module('starter.controllers', [])
         $cordovaToast.show('File successfully saved.', 'short', 'center').then(function(success) {}, function (error) {});
       }, function (error) {
         $cordovaToast.show('Error saving file', 'short', 'center').then(function(success) {}, function (error) {});
-        console.log("File not saved");
-        console.log("ERROR: " + error);
+        console.log("Error saving file: " + error);
       });
     })
     } else {
       window.alert("Your values are not within the tolerances. Please check them and resubmit.")
     }
   };
-
-
   $scope.doSave4 = function() {
     $ionicPlatform.ready(function() {
       var SID = $scope.SID.data;
@@ -222,13 +216,14 @@ angular.module('starter.controllers', [])
         $cordovaToast.show('File successfully saved.', 'short', 'center').then(function(success) {}, function (error) {}); 
       }, function (error) {
         $cordovaToast.show('Error saving file', 'short', 'center').then(function(success) {}, function (error) {});
-        console.log("File not saved");
-        console.log("ERROR: " + error);
+        console.log("Error saving file: " + error);
       });
     })
   };
 
+
 // Upload function: Should upload all files in directory
+//Currently loops through four arrays containing filenames for each datafield, also could create one filename array and have one for loop
   $scope.doUpload = function() {
     var url = "http://www7330.nrlssc.navy.mil/derada/AEC/upload.php";
     for (var i = 0; i < $scope.tempfiles.length; i++){
@@ -238,13 +233,10 @@ angular.module('starter.controllers', [])
       $cordovaFileTransfer.upload(url, targetPath, options)
       .then(function(result) {
       console.log("SUCCESS: " + JSON.stringify(result.response));
-      var form1 = document.getElementById("temp");
-      form1.reset();
       $scope.uploadnumber = $scope.uploadnumber + 1;
       }, function(err) {
       $scope.failnumber = $scope.failnumber + 1;
       console.log("ERROR: " + JSON.stringify(err));
-      //Can add error codes/handlers here
       }, function (progress) {
       $timeout(function () {
       $scope.downloadProgress = (progress.loaded / progress.total) * 100;
@@ -259,13 +251,10 @@ angular.module('starter.controllers', [])
       $cordovaFileTransfer.upload(url, targetPath, options)
       .then(function(result) {
       console.log("SUCCESS: " + JSON.stringify(result.response));
-      var form2 = document.getElementById("salin");
-      form2.reset();
       $scope.uploadnumber = $scope.uploadnumber + 1;
       }, function(err) {
       $scope.failnumber = $scope.failnumber + 1;
       console.log("ERROR: " + JSON.stringify(err));
-      //Can add error codes/handlers here
       }, function (progress) {
       $timeout(function () {
       $scope.downloadProgress = (progress.loaded / progress.total) * 100;
@@ -280,13 +269,10 @@ angular.module('starter.controllers', [])
       $cordovaFileTransfer.upload(url, targetPath, options)
       .then(function(result) {
       console.log("SUCCESS: " + JSON.stringify(result.response));
-      var form3 = document.getElementById("sechi");
-      form3.reset();
       $scope.uploadnumber = $scope.uploadnumber + 1;
       }, function(err) {
       $scope.failnumber = $scope.failnumber + 1;
       console.log("ERROR: " + JSON.stringify(err));
-      //Can add error codes/handlers here
       }, function (progress) {
       $timeout(function () {
       $scope.downloadProgress = (progress.loaded / progress.total) * 100;
@@ -301,34 +287,62 @@ angular.module('starter.controllers', [])
       $cordovaFileTransfer.upload(url, targetPath, options)
       .then(function(result) {
       console.log("SUCCESS: " + JSON.stringify(result.response));
-      var form4 = document.getElementById("weather");
-      form4.reset();
       $scope.uploadnumber = $scope.uploadnumber + 1;
       }, function(err) {
       $scope.failnumber = $scope.failnumber + 1;
       console.log("ERROR: " + JSON.stringify(err));
-      //Can add error codes/handlers here
       }, function (progress) {
       $timeout(function () {
       $scope.downloadProgress = (progress.loaded / progress.total) * 100;
       })
       })  
     }
-  //    $cordovaDialogs.alert('Files uploaded: ' + $scope.uploadnumber + 'Files failed: ' + $scope.failnumber, 'Upload Status', 'OK')
-    //.then(function() {
-      // callback success
-   // });
   };
+
+
+
+$ionicModal.fromTemplateUrl('intro1-modal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal
+  })  
+
+  $scope.openModal = function() {
+    $scope.modal.show()
+  }
+
+  $scope.closeModal = function() {
+    $scope.modal.hide();
+  };
+
+  $scope.$on('$destroy', function() {
+    $scope.modal.remove();
+  });
 })
 
 
 
 
 
-.controller('AccountCtrl', function($scope, $cordovaDialogs, $cordovaFile, dataShare, $ionicPlatform) {
+.controller('AccountCtrl', function($scope, $cordovaDialogs, $cordovaFile, dataShare, $ionicPlatform, $ionicModal) {
   $scope.newSID = {};
   $scope.userSID = {};
-  $scope.server = {};
+
+//Updates the Session ID
+  $scope.setSID = function () {
+    $scope.newSID = $scope.userSID.data
+    console.log('Session ID set to: ' + $scope.newSID);
+    window.alert ('Your new session ID is ' + $scope.newSID);
+    dataShare.sendData($scope.newSID);
+    $cordovaFile.createDir(cordova.file.documentsDirectory, $scope.newSID, false)
+    .then(function (success) {
+      console.log("New directory " + $scope.newSID + " created.");
+    }, function (error) {
+      console.log(error);
+    }); 
+  }; 
+
 //Removes SID Directory
   $scope.doRemove = function() {
     $cordovaDialogs.confirm('Are you sure you want to delete all local files? This action is permanant.', 'Purge Local Cache', ['Delete','Cancel'])
@@ -361,43 +375,52 @@ angular.module('starter.controllers', [])
       });
   };
 
-//Updates the Session ID
-  $scope.setSID = function () {
-    $scope.newSID = $scope.userSID.data
-    console.log('Session ID set to: ' + $scope.newSID);
-    window.alert ('Your new session ID is ' + $scope.newSID);
-    dataShare.sendData($scope.newSID);
-    $cordovaFile.createDir(cordova.file.documentsDirectory, $scope.newSID, false)
-    .then(function (success) {
-      console.log("New directory " + $scope.newSID + " created.");
-    }, function (error) {
-      //window.alert("Error: This Session ID has already been used.");
-      console.log(error);
-    }); 
-  }; 
+
+$ionicModal.fromTemplateUrl('intro-modal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal
+  })  
+
+  $scope.openModal = function() {
+    $scope.modal.show()
+  }
+
+  $scope.closeModal = function() {
+    $scope.modal.hide();
+  };
+
+  $scope.$on('$destroy', function() {
+    $scope.modal.remove();
+  });
+
 })
 
 
 
 
-.controller('CameraCtrl', function($scope, $timeout, $cordovaCamera, $ionicPlatform, $cordovaFile, $cordovaFileTransfer, $cordovaToast, dataShare) {
+.controller('CameraCtrl', function($scope, $timeout, $cordovaCamera, $ionicPlatform, $cordovaFile, $cordovaFileTransfer, $cordovaToast, dataShare, $ionicModal) {
  $scope.img = {};
  $scope.image = {};
  $scope.SIDpic = {};
+
  $scope.imagefiles = [];
  $scope.datafiles = [];
  $scope.counterimg = 0;
+
   $scope.$on('data_shared', function(){
     var userSID = dataShare.getData();
     $scope.SIDpic.data = userSID;
   });
+
   $scope.getPhoto = function(){
     var options = {
       quality: 50,
       destinationType: Camera.DestinationType.FILE_URI,
       sourceType: Camera.PictureSourceType.CAMERA,
       allowEdit: true,
-      encodingType: Camera.EncodingType.PNG,
+      encodingType: Camera.EncodingType.JPEG,
       targetWidth: 300,
       targetHeight: 300,
       popoverOptions: CameraPopoverOptions,
@@ -409,7 +432,8 @@ angular.module('starter.controllers', [])
         var image = document.getElementById('myImage');
         image.src = imageURI;
         console.log(imageURI);
-        $scope.image.data = image.src;
+        $scope.image.data = imageURI;
+        //$scope.imagefiles.push(imageURI);
       }, function(err) {
         // error
       });
@@ -423,8 +447,17 @@ angular.module('starter.controllers', [])
     else{
       var imagename = $scope.SIDpic.data + "_" + $scope.img.name; + "_" + Date.now();
     }
+    $cordovaFile.copyFile(cordova.file.tempDirectory, $scope.image.data.split("/").pop(), cordova.file.documentsDirectory, imagename + ".jpeg")
+    .then(function(success){
+        $cordovaToast.show('Picture saved successfully: ' + imagename, 'short', 'center').then(function(success) {}, function (error){});
+        $scope.imagefiles.push(imagename);
+        $scope.counterimg = $scope.counterimg + 1;
+        document.getElementById("counter-img").innerHTML = $scope.counterimg;
+    }, function(error) {
+        window.alert(error);
+    })
 
-    $cordovaFile.writeFile(cordova.file.documentsDirectory, imagename + ".png", $scope.image.data, true)
+   /* $cordovaFile.writeFile(cordova.file.documentsDirectory, imagename + ".png", $scope.image.data, true)
       .then(function (success) {
         $cordovaToast.show('Picture saved successfully.', 'short', 'center').then(function(success) {}, function (error) {});
         $scope.imagefiles.push(imagename + ".png");
@@ -432,17 +465,16 @@ angular.module('starter.controllers', [])
         $scope.counterimg = $scope.counterimg + 1;
         document.getElementById("counter-img").innerHTML = $scope.counterimg;
       }, function (error) {  
-      })
+      }) */
+
     $cordovaFile.writeFile(cordova.file.documentsDirectory, imagename + ".oskit" , $scope.img.syn, true)
     .then(function (success) {
       $scope.datafiles.push(imagename + ".oskit");
-      
         var formtext = document.getElementById("image");
         formtext.reset();
       $cordovaToast.show('Data saved successfully.', 'short', 'center').then(function(success){}, function (error) {});
     })
-
-  }
+  };
 
   $scope.doImageUpload = function (){
     var url = "http://www7330.nrlssc.navy.mil/derada/AEC/upload.php";
@@ -462,6 +494,7 @@ angular.module('starter.controllers', [])
       })
       })  
     }
+
     for (var i = 0; i < $scope.datafiles.length; i++){
       var targetPath = cordova.file.documentsDirectory + $scope.datafiles[i];
       var filesname = targetPath.split("/").pop();
@@ -477,10 +510,25 @@ angular.module('starter.controllers', [])
       })
       })  
     }
+  };
+
+
+$ionicModal.fromTemplateUrl('intro-modal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal
+  })  
+
+  $scope.openModal = function() {
+    $scope.modal.show()
   }
 
+  $scope.closeModal = function() {
+    $scope.modal.hide();
+  };
+
+  $scope.$on('$destroy', function() {
+    $scope.modal.remove();
+  });
 })
-
-
-
-

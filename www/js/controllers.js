@@ -83,7 +83,6 @@ angular.module('starter.controllers', [])
   $scope.salinfiles = [];
   $scope.sechifiles = [];
   $scope.weatherfiles = [];
-
 //Retrieves SID from Settings Controller
   $scope.SID = {};
   $scope.$on('data_shared', function(){
@@ -236,10 +235,11 @@ angular.module('starter.controllers', [])
       $cordovaFileTransfer.upload(url, targetPath, options)
       .then(function(result) {
       console.log("SUCCESS: " + JSON.stringify(result.response));
-      $scope.uploadnumber = $scope.uploadnumber + 1;
       }, function(err) {
-      $scope.failnumber = $scope.failnumber + 1;
       console.log("ERROR: " + JSON.stringify(err));
+      $cordovaDialogs.alert('Fatal Error: Upload failed.', 'Error', 'OK')
+        .then(function() {
+        });
       }, function (progress) {
       $timeout(function () {
       $scope.downloadProgress = (progress.loaded / progress.total) * 100;
@@ -254,10 +254,11 @@ angular.module('starter.controllers', [])
       $cordovaFileTransfer.upload(url, targetPath, options)
       .then(function(result) {
       console.log("SUCCESS: " + JSON.stringify(result.response));
-      $scope.uploadnumber = $scope.uploadnumber + 1;
       }, function(err) {
-      $scope.failnumber = $scope.failnumber + 1;
       console.log("ERROR: " + JSON.stringify(err));
+      $cordovaDialogs.alert('Fatal Error: Upload failed.', 'Error', 'OK')
+        .then(function() {
+        });
       }, function (progress) {
       $timeout(function () {
       $scope.downloadProgress = (progress.loaded / progress.total) * 100;
@@ -272,10 +273,11 @@ angular.module('starter.controllers', [])
       $cordovaFileTransfer.upload(url, targetPath, options)
       .then(function(result) {
       console.log("SUCCESS: " + JSON.stringify(result.response));
-      $scope.uploadnumber = $scope.uploadnumber + 1;
       }, function(err) {
-      $scope.failnumber = $scope.failnumber + 1;
       console.log("ERROR: " + JSON.stringify(err));
+      $cordovaDialogs.alert('Fatal Error: Upload failed.', 'Error', 'OK')
+        .then(function() {
+        });
       }, function (progress) {
       $timeout(function () {
       $scope.downloadProgress = (progress.loaded / progress.total) * 100;
@@ -290,10 +292,11 @@ angular.module('starter.controllers', [])
       $cordovaFileTransfer.upload(url, targetPath, options)
       .then(function(result) {
       console.log("SUCCESS: " + JSON.stringify(result.response));
-      $scope.uploadnumber = $scope.uploadnumber + 1;
       }, function(err) {
-      $scope.failnumber = $scope.failnumber + 1;
       console.log("ERROR: " + JSON.stringify(err));
+      $cordovaDialogs.alert('Fatal Error: Upload failed.', 'Error', 'OK')
+        .then(function() {
+        });
       }, function (progress) {
       $timeout(function () {
       $scope.downloadProgress = (progress.loaded / progress.total) * 100;
@@ -331,6 +334,8 @@ $ionicModal.fromTemplateUrl('/templates/help.html', {
 .controller('AccountCtrl', function($scope, $cordovaDialogs, $cordovaFile, dataShare, $ionicPlatform, $ionicModal) {
   $scope.newSID = {};
   $scope.userSID = {};
+  $scope.server = {};
+  $scope.server.data = "http://www7330.nrlssc.navy.mil/derada/AEC/upload.php"
 
 //Updates the Session ID
   $scope.setSID = function () {

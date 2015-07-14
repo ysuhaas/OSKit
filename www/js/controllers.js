@@ -307,7 +307,7 @@ angular.module('starter.controllers', [])
 
 
 
-$ionicModal.fromTemplateUrl('/templates/help.html', {
+$ionicModal.fromTemplateUrl('templates/help.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {
@@ -387,7 +387,7 @@ $ionicModal.fromTemplateUrl('/templates/help.html', {
   };
 
 
-$ionicModal.fromTemplateUrl('/templates/help.html', {
+$ionicModal.fromTemplateUrl('templates/help.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {
@@ -431,7 +431,7 @@ $ionicModal.fromTemplateUrl('/templates/help.html', {
       destinationType: Camera.DestinationType.FILE_URI,
       sourceType: Camera.PictureSourceType.CAMERA,
       allowEdit: true,
-      encodingType: Camera.EncodingType.JPEG,
+      encodingType: Camera.EncodingType.PNG,
       targetWidth: 300,
       targetHeight: 300,
       popoverOptions: CameraPopoverOptions,
@@ -522,7 +522,7 @@ $ionicModal.fromTemplateUrl('/templates/help.html', {
       })  
     }
   };
-$ionicModal.fromTemplateUrl('/templates/help.html', {
+$ionicModal.fromTemplateUrl('templates/help.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {

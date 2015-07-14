@@ -29,7 +29,7 @@ angular.module('starter.controllers', [])
 })
 
 
-
+/* Deprecrated Connection Status Controller
 .controller('DashCtrl', function($scope) {
  
  //Connection Status Function
@@ -58,10 +58,10 @@ angular.module('starter.controllers', [])
 
   };
 })
+*/
 
 
-
-.controller('ChatsCtrl', function($scope, $cordovaGeolocation, $cordovaDialogs, $cordovaFile, $cordovaFileTransfer, $ionicPlatform, $ionicModal, $cordovaToast, $timeout, dataShare) {
+.controller('DataCtrl', function($scope, $cordovaGeolocation, $cordovaDialogs, $cordovaFile, $cordovaFileTransfer, $ionicPlatform, $ionicModal, $cordovaToast, $timeout, dataShare) {
 
 //Defining Scope Variables
 
@@ -304,7 +304,7 @@ angular.module('starter.controllers', [])
 
 
 
-$ionicModal.fromTemplateUrl('intro1-modal.html', {
+$ionicModal.fromTemplateUrl('/templates/help.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {
@@ -382,7 +382,7 @@ $ionicModal.fromTemplateUrl('intro1-modal.html', {
   };
 
 
-$ionicModal.fromTemplateUrl('intro-modal.html', {
+$ionicModal.fromTemplateUrl('/templates/help.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {
@@ -517,9 +517,7 @@ $ionicModal.fromTemplateUrl('intro-modal.html', {
       })  
     }
   };
-
-
-$ionicModal.fromTemplateUrl('intro-modal.html', {
+$ionicModal.fromTemplateUrl('/templates/help.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {

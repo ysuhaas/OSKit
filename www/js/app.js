@@ -53,7 +53,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       views: {
         'tab-data': {
           templateUrl: 'templates/tab-data.html',
-          controller: 'ChatsCtrl'
+          controller: 'DataCtrl'
         }
       }
    })

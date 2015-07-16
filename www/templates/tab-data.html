@@ -20,6 +20,15 @@
         <img src= "oskit.jpg">
       </div>
     </div>
+
+    <div class ="row">
+      <div class="col" id="lat">
+      </div>
+      <div class="col" id="lon">
+      </div>
+      <div class="col" id="ele">
+      </div>
+    </div>
     
 
 <!--Temperature Input Field-->
@@ -135,10 +144,11 @@
 
 <!--Upload Button-->
     <div class="submit">
-      <button class="button button-block button-balanced" type="submit" ng-click= "doUpload()">
+      <button class="button button-block button-balanced" type="submit" ng-click= "doUpload()" ng-disabled="statusCheck">
       Upload
       </button>
     </div> 
-
+<div class="container status" id="status">
+</div>
   </ion-content>
 </ion-view>

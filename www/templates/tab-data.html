@@ -14,14 +14,14 @@
       <div class = "col new"> 
         <img src= "nrl.png">
       </div>
-      <div class = "col location" id="location">
+      <div class = "col location" id="SID">
       </div>
       <div class = "col oskit">
         <img src= "oskit.jpg">
       </div>
     </div>
 
-    <div class ="row">
+    <div class ="row location">
       <div class="col" id="lat">
       </div>
       <div class="col" id="lon">
@@ -39,7 +39,7 @@
           <div class="row">
             <div class="col col-35">
               <label class="item item-input">
-                <input type="number"  placeholder="Temperature: 0-40°C" ng-model="temp.data">
+                <input type="number"  placeholder="Temperature: 0-40°C" ng-model="temp.data" ng-required="true">
               </label>
             </div>
             <div class="col col-35">

@@ -4,40 +4,39 @@
     	</button>
   </ion-nav-buttons>
 	<ion-content>
+
 		<div class="list card">
-			<form id="image" ng-submit="savePic()">
-  			<!-- <div class="item item-avatar">
-    			<img src="nrl.png">
-    			<h2>Add a Picture to Upload</h2>
-    			<p>NRL</p>
-  			</div>-->
+			<!--<form id="image" ng-submit="savePic()">-->
   			<div class="item item-image">
     			<img id="myImage" />
   			</div>
+
   			<div>
   				<button class="button button-positive button-block" ng-click="takePhoto()">
     				<i class="icon ion-camera"></i>
     				Open Camera
   				</button>
 			</div>
-			<div>
+			<!--<div>
   				<button class="button button-positive button-block" ng-click="getPhoto()">
     				Select Existing Photo
   				</button>
-			</div>
+			</div>-->
 			<div class = "item"> 
   				<label class="item item-input">
   					<input type="text"  placeholder="Change Image Name" ng-maxlength="32" ng-model="img.name" id="imagename">
        		</label>
   			</div>
+
   			<div class = "imgtext item">
 				<label class="item item-input">
-					<textarea  placeholder="Enter a brief synopsis about this image. (Optional)" rows="4" ng-maxlength="256" ng-model="img.syn"></textarea>
+					<textarea  placeholder="Enter a brief synopsis about this image. (Optional)" rows="4" ng-maxlength="256" ng-model="img.syn" id="txtarea"></textarea>
 				</label>
 			</div>
+
 			<div class="row">
 				<div class="col col-66">
-					<button class="button button-block button-royal" type="submit">
+					<button class="button button-block button-royal" ng-click="savePic()">
       				Save
       				</button>
 				</div>
@@ -45,12 +44,17 @@
 				0
 				</div>
 			</div>
-		</form>
+		<!--</form>-->
 		</div>
+
+
 		<div class="container upload-pic">
 			<button class="button button-block button-balanced" ng-click= "doImageUpload()">
 			Upload
 			</button>
 		</div>
+
+
+
 	</ion-content>
 </ion-view>

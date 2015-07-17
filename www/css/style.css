@@ -16,14 +16,14 @@
 
 /*Data Tab*/
 .oskit{
-	text-align: right;
+	text-align: center;
 }
 .new{
-	text-align: left;
+	text-align: center;
 }
 .location{
 	text-align: center;
-	vertical-align: middle;
+	vertical-align: bottom;
 }
 .status{
 	text-align: center;

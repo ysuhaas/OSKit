@@ -644,7 +644,7 @@ $scope.takePhoto = function(){
     $cordovaFile.copyFile(cordova.file.tempDirectory, $scope.image.data.split("/").pop(), cordova.file.documentsDirectory, imagename + ".png")
     .then(function(success){
         $cordovaToast.show('Picture saved successfully: ' + imagename, 'short', 'center').then(function(success) {}, function (error){});
-        $scope.imagefiles.push(imagename);
+        $scope.imagefiles.push(imagename + '.png');
         $scope.counterimg = $scope.counterimg + 1;
         document.getElementById("counter-img").innerHTML = $scope.counterimg; 
         var image = document.getElementById('myImage');

@@ -123,7 +123,7 @@ $scope.checkStatus = function() {
     $cordovaFileTransfer.upload(url, cordova.file.documentsDirectory + "status.test", options)
       .then(function(result) {
         $scope.countersum = $scope.counter1 + $scope.counter2 + $scope.counter3 + $scope.counter4;
-          if ($scope.countersum == 0) {
+          if ($scope.countersum == 0 || $scope.SID.data == false) {
             $scope.statusCheck = true;
           }
           else {
@@ -157,7 +157,7 @@ $scope.checkStatus();
       $cordovaFile.writeFile(cordova.file.documentsDirectory + SID, $scope.fileName, data, true)
       .then(function (success) {
         console.log('File successfully saved: ' + $scope.fileName);
-        $scope.tempfiles.push($scope.fileName);
+        $scope.tempfiles.push(SID + "/" + $scope.fileName);
         var form = document.getElementById("temp");
         form.reset();
         $scope.counter1 += 1;
@@ -185,7 +185,7 @@ $scope.checkStatus();
       $cordovaFile.writeFile(cordova.file.documentsDirectory + SID, $scope.fileName, data, true)
       .then(function (success) {
         console.log('File successfully saved: ' + $scope.fileName);
-        $scope.salinfiles.push($scope.fileName);
+        $scope.salinfiles.push(SID + "/" + $scope.fileName);
         var form = document.getElementById("salin");
         form.reset();
         $scope.counter2 += 1;
@@ -214,7 +214,7 @@ $scope.checkStatus();
       $cordovaFile.writeFile(cordova.file.documentsDirectory + SID, $scope.fileName, data, true)
       .then(function (success) {
         console.log('File successfully saved: ' + $scope.fileName);
-        $scope.sechifiles.push($scope.fileName);
+        $scope.sechifiles.push(SID + "/" + $scope.fileName);
         var form = document.getElementById("sechi");
         form.reset();
         $scope.counter3 += 1;
@@ -241,7 +241,7 @@ $scope.checkStatus();
       $cordovaFile.writeFile(cordova.file.documentsDirectory + SID, $scope.fileName, data, true)
       .then(function (success) {
         console.log('File successfully saved: ' + $scope.fileName);
-        $scope.weatherfiles.push($scope.fileName);
+        $scope.weatherfiles.push(SID + "/" + $scope.fileName);
         var form = document.getElementById("weather");
         form.reset();
         $scope.counter4 += 1;
@@ -273,7 +273,7 @@ $scope.checkStatus();
       document.getElementById("status").innerHTML = "Connection Status: OK";
 
       for (var i = 0; i < $scope.tempfiles.length; i++){
-        var targetPath = cordova.file.documentsDirectory + $scope.SID.data + "/" + $scope.tempfiles[i];
+        var targetPath = cordova.file.documentsDirectory + $scope.tempfiles[i];
         console.log(targetPath);
         var filesname = targetPath.split("/").pop();
         var options = {fileKey: "filename", fileName: filesname, chunkedMode: false, mimeType: "text/plain"};
@@ -296,7 +296,7 @@ $scope.checkStatus();
         })  
       }
       for (var i = 0; i < $scope.salinfiles.length; i++){
-        var targetPath = cordova.file.documentsDirectory + $scope.SID.data + "/" + $scope.salinfiles[i];
+        var targetPath = cordova.file.documentsDirectory + $scope.salinfiles[i];
         var filesname = targetPath.split("/").pop();
         var options = {fileKey: "filename", fileName: filesname, chunkedMode: false, mimeType: "text/plain"};
         $cordovaFileTransfer.upload(url, targetPath, options)
@@ -318,7 +318,7 @@ $scope.checkStatus();
         })  
       }
       for (var i = 0; i < $scope.sechifiles.length; i++){
-        var targetPath = cordova.file.documentsDirectory + $scope.SID.data + "/" + $scope.sechifiles[i];
+        var targetPath = cordova.file.documentsDirectory + $scope.sechifiles[i];
         var filesname = targetPath.split("/").pop();
         var options = {fileKey: "filename", fileName: filesname, chunkedMode: false, mimeType: "text/plain"};
         $cordovaFileTransfer.upload(url, targetPath, options)
@@ -340,7 +340,7 @@ $scope.checkStatus();
         })  
       }
       for (var i = 0; i < $scope.weatherfiles.length; i++){
-        var targetPath = cordova.file.documentsDirectory + $scope.SID.data + "/" + $scope.weatherfiles[i];
+        var targetPath = cordova.file.documentsDirectory + $scope.weatherfiles[i];
         var filesname = targetPath.split("/").pop();
         var options = {fileKey: "filename", fileName: filesname, chunkedMode: false, mimeType: "text/plain"};
         $cordovaFileTransfer.upload(url, targetPath, options)
@@ -419,6 +419,7 @@ $scope.$on("purge", function(){
     $scope.weatherfiles.length = 0
     $scope.salinfiles.length = 0
     $scope.sechifiles.length = 0
+    $scope.statusCheck = true;
 })
 
 $ionicModal.fromTemplateUrl('templates/help.html', {
@@ -533,7 +534,7 @@ $ionicModal.fromTemplateUrl('templates/help.html', {
  $scope.picThere = undefined;
 
  $scope.picCheck = function(){
-  if (document.getElementById('myImage').src.split("/").pop() == "pic.png") {
+  if (document.getElementById('myImage').src.split("/").pop() == "pic.png" || $scope.SIDpic.data == false) {
     $scope.picThere = true;
   }
   else{
@@ -574,34 +575,31 @@ $ionicModal.fromTemplateUrl('templates/help.html', {
 //Retrieve SID
   $scope.$on('data_shared', function(){
     console.log("event fired");
-    var userSID = dataShare.getData();
-    $scope.SIDpic.data = userSID;
-    console.log("userSID: " + userSID);
-    console.log(JSON.stringify($scope.SIDpic));
+    
   });
 
-//SID prompt
-$scope.check = function(){
-  console.log($scope.SIDpic.data);
-  if ($scope.SIDpic.data == undefined) {
+
+$scope.$on('$ionicView.enter', function(e) {
+  var userSID = dataShare.getData();
+  $scope.SIDpic.data = userSID;
+  console.log("userSID: " + userSID);
+  if ($scope.SIDpic.data == false) {
     $cordovaDialogs.confirm('A Session ID is required. Would you like to set one?', 'Session ID')
     .then(function(buttonIndex) {
-      // no button = 0, 'OK' = 1, 'Cancel' = 2
-      var btnIndex = buttonIndex;
-      if (btnIndex == 1) {
-         $ionicTabsDelegate.select(2);
-      }
-      else{
-        return null;
-      }
+    // no button = 0, 'OK' = 1, 'Cancel' = 2
+    var btnIndex = buttonIndex;
+    if (btnIndex == 1) {
+      $ionicTabsDelegate.select(2);
+    }
+    else{
+      return null;
+    }
     });
   }
   else {
     return null;
   }
-};
-
-
+});
 
 
 
@@ -639,7 +637,7 @@ $scope.takePhoto = function(){
       var imagename = $scope.SIDpic.data + "_photo_" + Date.now();
     }
     else{
-      var imagename = $scope.SIDpic.data + "_" + $scope.img.name + "_" + Date.now();
+      var imagename = $scope.SIDpic.data + "_" + $scope.img.name.replace(/ /g, "") + "_" + Date.now();
     }
 
 
@@ -718,19 +716,7 @@ $scope.takePhoto = function(){
   };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-$ionicModal.fromTemplateUrl('templates/', {
+$ionicModal.fromTemplateUrl('templates/help.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {

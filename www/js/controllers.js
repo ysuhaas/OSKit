@@ -30,7 +30,7 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('DataCtrl', function($scope, $ionicTabsDelegate, $cordovaGeolocation, $cordovaDialogs, $cordovaFile, $cordovaFileTransfer, $ionicPlatform, $ionicModal, $cordovaToast, $timeout, dataShare) {
+.controller('DataCtrl', function($scope, $ionicTabsDelegate, $cordovaProgress, $cordovaGeolocation, $cordovaDialogs, $cordovaFile, $cordovaFileTransfer, $ionicPlatform, $ionicModal, $cordovaToast, $timeout, dataShare) {
 
 //Defining Scope Variables
 $scope.statusCheck = undefined;
@@ -89,7 +89,7 @@ $ionicPlatform.ready(function() {
       console.log('alti: ' + $scope.loc.alti);
       document.getElementById("lat").innerHTML = "Latitude:" + "<br>" + lat;
       document.getElementById("lon").innerHTML = "Longitude:" + "<br>" + lon;
-      document.getElementById("ele").innerHTML = "Elevation:" + "<br>" + ele;
+      document.getElementById("ele").innerHTML = "Elevation:" + "<br>" + ele + " m";
     }, function(err) {
     })
 
@@ -102,7 +102,6 @@ $ionicPlatform.ready(function() {
       // no button = 0, 'OK' = 1, 'Cancel' = 2
       var btnIndex = buttonIndex;
       if (btnIndex == 1) {
-        $ionicTabsDelegate.select(0);
          $ionicTabsDelegate.select(2);
       }
       else{
@@ -148,7 +147,7 @@ $scope.checkStatus();
 //Export function: Should save file, tick up counter, and clear field (Individual saves for now)
 //There should be a way to have a single save function with different arguments being passed to indicate the data type
   $scope.doSave1 = function() {
-    if (($scope.temp.data > 0 && $scope.temp.data < 40) && ($scope.temp.depth > 0 && $scope.temp.depth < 100)) {
+    if (($scope.temp.data > -0.0001 && $scope.temp.data < 40) && ($scope.temp.depth > -0.0001 && $scope.temp.depth < 100)) {
       var SID = $scope.SID.data;
       var DTG = Date.now();
       var data = $scope.temp.data + ', ' + $scope.temp.depth + ', ' + $scope.loc.lat + ', ' + $scope.loc.lon + ', ' + $scope.loc.acc + ', ' + $scope.loc.alti + ', ' + $scope.loc.heading + ', ' + $scope.loc.speed;
@@ -167,15 +166,21 @@ $scope.checkStatus();
         $cordovaToast.show('File successfully saved.', 'short', 'center').then(function(success) {}, function (error) {});
         $scope.checkStatus();
       }, function (error) {
-        $cordovaToast.show('Error saving file', 'short', 'center').then(function(success) {}, function (error) {});
-        console.log("Error saving file: " + error.message);
+        if (error.code == 1) {
+        $cordovaToast.show('No session ID set. Please set a session ID', 'short', 'center').then(function(success) {}, function (error) {});
+        }
+        else{
+        $cordovaToast.show('Error saving file.', 'short', 'center').then(function(success) {}, function (error) {});
+        console.log("Error saving file: " + error.code);
+        }
+
       });
     } else {
       $cordovaDialogs.alert('Your values are not within the tolerances. Please check them and resubmit.', 'Error');
     }
   };
   $scope.doSave2 = function() {
-    if (($scope.salin.data > 0 && $scope.salin.data < 40) && ($scope.salin.depth > 0 && $scope.salin.depth < 100)) {
+    if (($scope.salin.data > -0.0001 && $scope.salin.data < 40) && ($scope.salin.depth > -0.0001 && $scope.salin.depth < 100)) {
     $ionicPlatform.ready(function() {
       var SID = $scope.SID.data;
       var DTG = Date.now();
@@ -195,8 +200,13 @@ $scope.checkStatus();
         $cordovaToast.show('File successfully saved.', 'short', 'center').then(function(success) {}, function (error) {});
         $scope.checkStatus();
       }, function (error) {
-        $cordovaToast.show('Error saving file', 'short', 'center').then(function(success) {}, function (error) {});
-        console.log("Error saving file: " + error);
+        if (error.code == 1) {
+        $cordovaToast.show('No session ID set. Please set a session ID', 'short', 'center').then(function(success) {}, function (error) {});
+        }
+        else{
+        $cordovaToast.show('Error saving file.', 'short', 'center').then(function(success) {}, function (error) {});
+        console.log("Error saving file: " + error.code);
+        }
       });
     })
     } else {
@@ -204,7 +214,7 @@ $scope.checkStatus();
     }
   };
   $scope.doSave3 = function() {
-    if ($scope.sechi.depth > 0 && $scope.sechi.depth < 100) {
+    if ($scope.sechi.depth > -0.0001 && $scope.sechi.depth < 100) {
     $ionicPlatform.ready(function() {
       var SID = $scope.SID.data;
       var DTG = Date.now();
@@ -223,8 +233,13 @@ $scope.checkStatus();
         $cordovaToast.show('File successfully saved.', 'short', 'center').then(function(success) {}, function (error) {});
         $scope.checkStatus();
       }, function (error) {
-        $cordovaToast.show('Error saving file', 'short', 'center').then(function(success) {}, function (error) {});
-        console.log("Error saving file: " + error);
+        if (error.code == 1) {
+        $cordovaToast.show('No session ID set. Please set a session ID', 'short', 'center').then(function(success) {}, function (error) {});
+        }
+        else{
+        $cordovaToast.show('Error saving file.', 'short', 'center').then(function(success) {}, function (error) {});
+        console.log("Error saving file: " + error.code);
+        }
       });
     })
     } else {
@@ -250,8 +265,13 @@ $scope.checkStatus();
         $cordovaToast.show('File successfully saved.', 'short', 'center').then(function(success) {}, function (error) {});
         $scope.checkStatus();
       }, function (error) {
-        $cordovaToast.show('Error saving file', 'short', 'center').then(function(success) {}, function (error) {});
-        console.log("Error saving file: " + error);
+        if (error.code == 1) {
+        $cordovaToast.show('No session ID set. Please set a session ID', 'short', 'center').then(function(success) {}, function (error) {});
+        }
+        else{
+        $cordovaToast.show('Error saving file.', 'short', 'center').then(function(success) {}, function (error) {});
+        console.log("Error saving file: " + error.code);
+        }
       });
     })
   };
@@ -271,6 +291,7 @@ $scope.checkStatus();
       console.log("Server online.")
       $scope.statusCheck = false;
       document.getElementById("status").innerHTML = "Connection Status: OK";
+      $cordovaProgress.showSimpleWithLabel(true, "Uploading");
 
       for (var i = 0; i < $scope.tempfiles.length; i++){
         var targetPath = cordova.file.documentsDirectory + $scope.tempfiles[i];
@@ -336,6 +357,7 @@ $scope.checkStatus();
         }, function (progress) {
         $timeout(function () {
         $scope.downloadProgress = (progress.loaded / progress.total) * 100;
+
         })
         })  
       }
@@ -379,8 +401,10 @@ $scope.FSM = function(){
   if ($scope.arrchecker == $scope.arrlength && $scope.arrchecker>0){
   if ($scope.errflag == 1) {
     $cordovaDialogs.alert('Error uploading files. Please try again later.', 'Error', 'OK')
+    $cordovaProgress.hide();
   }
   else {
+    $cordovaProgress.hide();
     $cordovaDialogs.alert('Files successfully uploaded.', 'Success', 'OK')
     $scope.tempfiles.length = 0
     $scope.weatherfiles.length = 0
@@ -523,7 +547,7 @@ $ionicModal.fromTemplateUrl('templates/help.html', {
 
 
 
-.controller('CameraCtrl', function($scope, $timeout, $ionicTabsDelegate, $cordovaCamera, $cordovaDialogs, $ionicPlatform, $cordovaFile, $cordovaFileTransfer, $cordovaToast, $ionicModal, dataShare) {
+.controller('CameraCtrl', function($scope, $cordovaProgress, $timeout, $ionicTabsDelegate, $cordovaCamera, $cordovaDialogs, $ionicPlatform, $cordovaFile, $cordovaFileTransfer, $cordovaToast, $ionicModal, dataShare) {
  $scope.img = {};
  $scope.image = {};
  $scope.SIDpic = {};
@@ -577,7 +601,11 @@ $ionicModal.fromTemplateUrl('templates/help.html', {
     console.log("event fired");
     
   });
-
+  //needs to also clear images (not just counter), but documentsDirectory is unmodifiable
+$scope.$on("purge", function(){
+  $scope.counterimg = 0;
+  document.getElementById("counter-img").innerHTML = $scope.counterimg; 
+})
 
 $scope.$on('$ionicView.enter', function(e) {
   var userSID = dataShare.getData();
@@ -686,6 +714,7 @@ $scope.takePhoto = function(){
       $cordovaFileTransfer.upload(url, targetPath, options)
       .then(function(result) {
       console.log("SUCCESS: " + JSON.stringify(result.response));
+      $cordovaProgress.hide();
       document.getElementById("counter-img").innerHTML = 0;
       $cordovaDialogs.alert('Successfully uploaded images.', 'Success');
       }, function(err) {
@@ -693,7 +722,9 @@ $scope.takePhoto = function(){
       $cordovaDialogs.alert('Error uploading images.', 'Error');
       }, function (progress) {
       $timeout(function () {
+      $cordovaProgress.showSimpleWithLabel(true, "Uploading Images");
       $scope.downloadProgress = (progress.loaded / progress.total) * 100;
+      //used quick and dirty progress indicator but can utilize ^ for accurate progress bar
       })
       })  
     }

@@ -6,7 +6,7 @@ The OSKit Mobile Application was developed as part of the final project for SEAP
 
 The application was developed using the Ionic framework (http://ionicframework.com/), a cross-platform framework for mobile applications in HTML5/CSS/JS. Ionic uses the AngularJS framework, and the ngCordova API can be utilized to access all the device's hardware functions (camera, GPS etc.)
 
-A more comprehensive overview of the OSKit Mobile Application Project can be found at this link: poster.link.com
+A more comprehensive overview of the OSKit Mobile Application Project can be found at this link: http://bit.ly/1MweOw4
 
 ## Code Example
 ```

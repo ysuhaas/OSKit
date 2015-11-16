@@ -1,8 +1,12 @@
-## OSKit
+## Background
 
->NOTICE: This application is no longer under active public development as it has been commissioned by NRL.
+>NOTICE: This application is no longer under active public development as it has been commissioned by NRL-SSC.
 
-The OSKit Mobile Application was developed as part of the final project for SEAP 2015 at NRL-SSC. The OSKit, short for Ocean Sampling Kit, is part of the NRL's Adaptive Ecosystem Climatology (AEC) project, designed to form a comprehensive climatology model of the Gulf Coast using multiple sources of data. The OSKit was desgined to be an outreach project deployed to local high schools that would crowdsource oceanographic data to be sent back to NRL. 
+The OSKit Mobile Application was developed as part of the final project for SEAP 2015 at NRL-SSC. The OSKit, short for Ocean Sampling Kit, is part of the NRL's Adaptive Ecosystem Climatology (AEC) project, designed to form a comprehensive climatology model of the Gulf Coast using multiple sources of data. The OSKit was desgined to be an outreach project deployed to local high schools that would crowdsource oceanographic data to be sent back to NRL. The OSKit consists of two parts; an ROV that can be easily constructed with off-the-shelf products and an accompanying mobile application that would be able to log data collected by this aquatic ROV and send back to a crowdsourced data pool. 
+
+The application was developed using the Ionic framework (http://ionicframework.com/), a cross-platform framework for mobile applications in HTML5/CSS/JS. Ionic uses the AngularJS framework, and the ngCordova API can be utilized to access all the device's hardware functions (camera, GPS etc.)
+
+A more comprehensive overview of the OSKit Mobile Application Project can be found at this link: poster.link.com
 
 ## Code Example
 ```
@@ -40,9 +44,6 @@ The OSKit Mobile Application was developed as part of the final project for SEAP
     }
   };
 ```
-## Motivation
-
-A short description of the motivation behind the creation and maintenance of the project. This should explain **why** the project exists.
 
 ## Installation
 
@@ -67,3 +68,7 @@ The ngCordova API was used to access many of the device's hardware functions. Th
 ## Testing
 
 This application can be compiled and tested using the "ionic serve" command in the terminal (executed from the project root). To build this application for a simulator or a device for testing, run the command "ionic build <platform>", replacing <platform> with ios or android. Building for iOS will output an .xcodeproj file that can be opened in Xcode and deployed to a device or simulator. Building for Android will output an Android Eclipse file that can be opened in Eclipse and deployed to a device/simulator. An alternative way to build for a simulator is to run the command "ionic emulate <platform>", which will build and auto-deploy the application to the specified simulator. 
+
+## Contact
+Suhaas Yerramreddy
+ysuhaas@gmail.com

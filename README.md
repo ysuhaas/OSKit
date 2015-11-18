@@ -1,6 +1,6 @@
 ## Background
 
->NOTICE: This application is no longer under active public development as it has been commissioned by NRL-SSC.
+>UPDATE: This application is no longer under active public development as it has been commissioned by NRL-SSC.
 
 The OSKit Mobile Application was developed as part of the final project for SEAP 2015 at NRL-SSC. The OSKit, short for Ocean Sampling Kit, is part of the NRL's Adaptive Ecosystem Climatology (AEC) project, designed to form a comprehensive climatology model of the Gulf Coast using multiple sources of data. The OSKit was desgined to be an outreach project deployed to local high schools that would crowdsource oceanographic data to be sent back to NRL. The OSKit consists of two parts; an ROV that can be easily constructed with off-the-shelf products and an accompanying mobile application that would be able to log data collected by this aquatic ROV and send back to a crowdsourced data pool. 
 

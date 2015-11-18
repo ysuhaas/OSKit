@@ -4,7 +4,7 @@
 
 The OSKit Mobile Application was developed as part of the final project for SEAP 2015 at NRL-SSC. The OSKit, short for Ocean Sampling Kit, is part of the NRL's Adaptive Ecosystem Climatology (AEC) project, designed to form a comprehensive climatology model of the Gulf Coast using multiple sources of data. The OSKit was desgined to be an outreach project deployed to local high schools that would crowdsource oceanographic data to be sent back to NRL. The OSKit consists of two parts; an ROV that can be easily constructed with off-the-shelf products and an accompanying mobile application that would be able to log data collected by this aquatic ROV and send back to a crowdsourced data pool. 
 
-The application was developed using the Ionic framework (http://ionicframework.com/), a cross-platform framework for mobile applications in HTML5/CSS/JS. Ionic uses the AngularJS framework, and the ngCordova API can be utilized to access all the device's hardware functions (camera, GPS etc.)
+The application was developed using the Ionic framework (http://ionicframework.com/), a cross-platform framework for mobile applications in HTML5/CSS/JS. Ionic uses the AngularJS framework, and the ngCordova API can be utilized to access all the device's hardware functions (camera, GPS etc.) The Ionic framework is also able to export the application files into a native app for iOS and Android.
 
 A more comprehensive overview of the OSKit Mobile Application Project can be found at this link: http://bit.ly/1MweOw4
 
